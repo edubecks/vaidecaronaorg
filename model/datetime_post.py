@@ -27,10 +27,11 @@ class DateTimePost(Post):
 
         ## 24h
         regex_24h_time = [
-            r'(\d\d?)(:\d{2})?\s*?(?:hrs|horas|h)',
+            r'(\d{1,2})(:\d{2})?\s*?(?:hrs|horas|h )',
             # r'(\d{2})h\s',
             # r'(\d{2})\s*horas',
             # r'(\d{2})\s*hrs',
+            r'(\d{1,2})(h\d{2})',
             r'(\d{2}):(\d{2})',
         ]
         for regex_expression in regex_24h_time:
@@ -41,22 +42,29 @@ class DateTimePost(Post):
                 minutes = int(match.group(2)[1:]) if match.lastindex == 2 else 0
                 # print(regex_expression, hour, minutes)
                 self.tag_time = datetime.time(hour, minutes)
-                return
+                return True
 
         ## am pm
         regex_am_pm_time = [
-            r'(\d{1,2})\s*?(am|pm)',
+            r'(\d{1,2})(:\d{2})?\s*?(am|pm|a\.m|p\.m)',
         ]
         for regex_expression in regex_am_pm_time:
             regex = re.compile(regex_expression)
             match = regex.search(self.content_clean)
             if match:
-                hour = int(match.group(1)) if match.group(2) == 'am' else int(match.group(1)) + 12
-                minutes = 0
+
+                ## am/pm tag
+                # print match.groups(), match.lastindex
+                ampm = match.group(3) if match.lastindex == 3 else match.group(2)
+                hour = int(match.group(1)) if ampm == 'am' else int(match.group(1)) + 12
+                minutes = int(match.group(2)[1:]) if match.group(2) else 0
+                # print ampm, hour, minutes
                 # print(regex_expression, hour, minutes)
                 self.tag_time = datetime.time(hour, minutes)
-                return
-        return
+                return True
+
+        ## not found
+        return False
 
     def retrieve_date_tags(self):
         """
