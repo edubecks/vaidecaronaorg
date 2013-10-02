@@ -62,7 +62,7 @@ class CaronaPostTestCase(TestCase):
     def test_vagas(self):
         for p in self.posts_dict:
             post = CaronaPost(p)
-            self.assertTrue(post.retrieve_vagas(), "found number of vagas tag")
+            # self.assertTrue(post.retrieve_vagas(), "found number of vagas tag")
             # pprint(post.content_clean)
             # pprint(post.tag_num_vagas)
         return
@@ -70,7 +70,31 @@ class CaronaPostTestCase(TestCase):
     def test_time(self):
         for p in self.posts_dict:
             post = CaronaPost(p)
-            pprint(post.content_clean)
+            # pprint(post.content_clean)
             self.assertTrue(post.retrieve_time_tags(), "found time tag")
-            pprint(post.tag_time)
+            # pprint(post.tag_time)
+        return
+
+    def test_origin_destiny(self):
+
+        example_posts = [
+            {'message': u'''São Paulo -> São Carlos',  go Por volta do 10 am Saindo do metro consolação. 2  vagas'''},
+            {'message': u'''São Paulo > São Carlos' ,   Por volta do 10 p.m. Saindo do metro consolação. 2  vagas'''},
+            {'message': u'''São Paulo -> SC'        ,   Por volta do 10 pm. Saindo do metro consolação. 2  vagas'''},
+            {'message': u'''SP -> SC'               ,  or volta do 15:10 hrs Saindo do metro consolação. 3   lugares'''},
+            {'message': u'''SP - SC'                ,   Por volta do 7 am Saindo do metro consolação. Carro com 4   pessoas'''},
+            {'message': u'''SÃO CARLOS para SÃO PAULO', Por volta do 7 pm Saindo do metro consolação. Sobram 2  lugares'''},
+            {'message': u'''SÃO PAULO ==> SÃO CARLOS',  Por volta das 10 da manha Saindo do metro consolação. Sobram 2  lugares'''},
+            {'message': u'''SP >>> Sanca',              Por volta das 3 da tarde Saindo do metro consolação. Sobram 2  lugares'''},
+            {'message': u'''Sampa --> Sanca',           Por volta das 3 da tarde Saindo do metro consolação. Sobram 2  lugares'''},
+            {'message': u'''São Carlos - São Paulo',    Por volta das 3 da tarde Saindo do metro consolação. Sobram 2  lugares'''},
+            {'message': u'''Sanca 》São Paulo',          Por volta das 3 da tarde Saindo do metro consolação. Sobram 2  lugares'''},
+            {'message': u'''SP->SC',                    Por volta das 3 da tarde Saindo do metro consolação. Sobram 2  lugares'''},
+        ]
+
+        for p  in example_posts:
+            post = CaronaPost(p)
+            post.city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
+            post.city2_list = [u'Sao Carlos',u'Sanca', u'Samca', u'SC']
+            post.retrieve_origin_destiny()
         return

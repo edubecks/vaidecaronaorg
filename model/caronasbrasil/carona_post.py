@@ -1,4 +1,5 @@
 # coding: utf-8
+from pprint import pprint
 import re
 import datetime
 from datetime_post import DateTimePost
@@ -14,10 +15,60 @@ class CaronaPost(DateTimePost):
         self.tag_origin = ''
         self.tag_destiny = ''
         self.tag_date = ''
+        self.city1_list = []
+        self.city2_list = []
         return
 
     def retrieve_origin_destiny(self):
-        return
+
+        ## creating regex
+        regex_cities_pattern = [
+            r'\s*-{0,3}>\s*',
+            r'\s*-{1,3}\s*',
+            r'\s*para\s*',
+            r'\s*\={0,3}>\s*',
+            r'\s*\>{0,3}\s*',
+            u'\s*》\s*',
+        ]
+        regex_city1_city2 = []
+        regex_city2_city1 = []
+        for city1 in self.city1_list:
+            for city2 in self.city2_list:
+                for regex in regex_cities_pattern:
+                    # print self.city1_list, city1, city2, regex
+                    ## using raw strings to use backslash in regex
+                    regex_city1_city2.append(r'('+city1+r')'+regex+ r'(' + city2 + r')')
+                    regex_city2_city1.append(r'('+city2+r')'+regex+ r'(' + city1 + r')')
+
+        ## searching for regex
+        city1 = self.city1_list[0]
+        city2 = self.city2_list[0]
+
+        ## city1 -> city2
+        for regex_expression in regex_city1_city2:
+            regex = re.compile(regex_expression, re.IGNORECASE)
+            match = regex.search(self.content_clean)
+            # print regex_expression, self.content_clean
+            if match:
+                self.tag_origin = city1
+                self.tag_destiny = city2
+                print self.tag_origin, self.tag_destiny
+                return True
+                # print(self.content_clean, regex_expression )
+
+        ## city2-> city1
+        for regex_expression in regex_city1_city2:
+            regex = re.compile(regex_expression, re.IGNORECASE)
+            match = regex.search(self.content_clean)
+            # print regex_expression, self.content_clean
+            if match:
+                self.tag_origin = city2
+                self.tag_destiny = city1
+                print self.tag_origin, self.tag_destiny
+                return True
+                # print(self.content_clean, regex_expression )
+
+        return False
 
     def retrieve_time_tags(self):
         super(CaronaPost, self).retrieve_time_tags()
