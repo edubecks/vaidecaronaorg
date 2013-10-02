@@ -28,7 +28,8 @@ class CaronaPost(DateTimePost):
             r'\s*para\s*',
             r'\s*\={0,3}>\s*',
             r'\s*\>{0,3}\s*',
-            u'\s*》\s*',
+            u'\s*\u300B\s*',
+            u'\s*\u27EB\s*',
         ]
         regex_city1_city2 = []
         regex_city2_city1 = []
@@ -52,19 +53,19 @@ class CaronaPost(DateTimePost):
             if match:
                 self.tag_origin = city1
                 self.tag_destiny = city2
-                print self.tag_origin, self.tag_destiny
+                # print self.tag_origin, self.tag_destiny
                 return True
                 # print(self.content_clean, regex_expression )
 
         ## city2-> city1
-        for regex_expression in regex_city1_city2:
+        for regex_expression in regex_city2_city1:
             regex = re.compile(regex_expression, re.IGNORECASE)
             match = regex.search(self.content_clean)
             # print regex_expression, self.content_clean
             if match:
                 self.tag_origin = city2
                 self.tag_destiny = city1
-                print self.tag_origin, self.tag_destiny
+                # print self.tag_origin, self.tag_destiny
                 return True
                 # print(self.content_clean, regex_expression )
 
@@ -116,12 +117,28 @@ class CaronaPost(DateTimePost):
 
         regex_vagas = [
             r'(\d{1,2})\s*?(vaga|lugar|pessoa)',
+            r'(uma)\s*?(vaga|lugar|pessoa)',
+            r'(duas)\s*?(vaga|pessoa)',
+            r'(dois)\s*?(lugar)',
+            r'(tres)\s*?(vaga|lugar|pessoa)',
+            r'(quatro)\s*?(vaga|lugar|pessoa)',
         ]
+
+        numbers = {
+            'uma': 1,
+            'duas': 2,
+            'dois': 2,
+            'tres': 3,
+            'quatro': 4,
+        }
         for regex_expression in regex_vagas:
             regex = re.compile(regex_expression)
             match = regex.search(self.content_clean)
             if match:
-                self.tag_num_vagas = int(match.group(1))
+                try:
+                    self.tag_num_vagas = int(match.group(1))
+                except ValueError:
+                    self.tag_num_vagas = int(numbers[match.group(1)])
                 return True
 
         return False
