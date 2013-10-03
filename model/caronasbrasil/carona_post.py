@@ -1,4 +1,5 @@
 # coding: utf-8
+import collections
 from pprint import pprint
 import re
 import datetime
@@ -17,6 +18,7 @@ class CaronaPost(DateTimePost):
         self.tag_date = ''
         self.city1_list = []
         self.city2_list = []
+        self.creation_date = None
         return
 
     def retrieve_origin_destiny(self):
@@ -28,6 +30,7 @@ class CaronaPost(DateTimePost):
             r'\s*para\s*',
             r'\s*\={0,3}>\s*',
             r'\s*\>{0,3}\s*',
+            r'\s* x \s*',
             u'\s*\u300B\s*',
             u'\s*\u27EB\s*',
         ]
@@ -132,7 +135,7 @@ class CaronaPost(DateTimePost):
             'quatro': 4,
         }
         for regex_expression in regex_vagas:
-            regex = re.compile(regex_expression)
+            regex = re.compile(regex_expression, re.IGNORECASE)
             match = regex.search(self.content_clean)
             if match:
                 try:
@@ -142,6 +145,82 @@ class CaronaPost(DateTimePost):
                 return True
 
         return False
+
+    def retrieve_date_tags(self):
+        if super(CaronaPost, self).retrieve_date_tags():
+           return True
+
+        ## detect using month
+        regex_date = [
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(jan)(?:eiro)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(fev)(?:ereiro)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(mar)(?:co)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(abr)(?:il)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(mai)(?:o)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(jun)(?:ho)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(jul)(?:ho)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(ago)(?:sto)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(set)(?:embro)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(out)(?:ubro)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(nov)(?:embro)?',
+            r'(\d{1,2})\s*?(?:de|\/)?\s*?(dez)(?:embro)?',
+        ]
+        for i, regex_expression in enumerate(regex_date):
+            regex = re.compile(regex_expression, re.IGNORECASE)
+            match = regex.search(self.content_clean)
+            # print self.content_clean
+            if match:
+                # print match.groups()
+                day = int(match.group(1))
+                month = i+1
+                # print(regex_expression, day, month)
+                self.tag_date = datetime.date(2013, month, day)
+                return True
+
+        regex_named_dates = [
+           r'(seg)(?:unda)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
+             r'(ter)(?:ca)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
+            r'(qua)(?:rta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(qui)(?:nta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+             r'(sex)(?:ta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
+            r'(sab)(?:ado)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+           r'(dom)(?:ingo)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
+        ]
+
+        for day, regex_expression in enumerate(regex_named_dates):
+            # print day, regex_expression
+            regex = re.compile(regex_expression, re.IGNORECASE)
+            match = regex.search(self.content_clean)
+            # print self.content_clean
+            # print regex_expression
+            if match:
+                # print match.groups(), match.lastindex
+                d = self.creation_date
+                max_days = 6
+                while d.weekday() != day and max_days: ## day: number of day, monday=0
+                    d += datetime.timedelta(1)
+                    max_days-=1
+                self.tag_date = d
+                # print self.tag_date
+                # day = int(match.group(1))
+                # month = i + 1
+                # print(regex_expression, day, month)
+                # self.tag_date = datetime.date(2013, month, day)
+                return True
+
+        ## special cases: today, tomorrow, the day after tomorrow
+        special_cases= collections.OrderedDict([('depois de amanha',2), ('amanha',1), ('hoje',0)])
+        for c, delta_time in special_cases.iteritems():
+            # print "*",c,"*", self.content_clean,"*"
+            if c in self.content_clean:
+                self.tag_date = self.creation_date + datetime.timedelta(delta_time)
+                # print self.tag_date
+                return True
+
+        ## nothing found
+        return False
+
+
 
 
 

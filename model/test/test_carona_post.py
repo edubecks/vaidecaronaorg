@@ -1,4 +1,5 @@
 # coding: utf-8
+import datetime
 from caronasbrasil.carona_post import CaronaPost
 
 __author__ = 'edubecks'
@@ -85,11 +86,36 @@ class CaronaPostTestCase(TestCase):
         return
 
     def test_time(self):
-        for p in self.posts_dict:
-            post = CaronaPost(p)
+
+        example_posts = [
+            [{'message': u'''Por volta do 7:31hrs S. 1 vaga'''},        datetime.time(7,31)],
+            [{'message': u'''a do 7:31 hrs Saindo da'''},               datetime.time(7,31)],
+            [{'message': u''' volta do 7:31 h Saindvaga'''},            datetime.time(7,31)],
+            [{'message': u'''volta do 7:31h Saindo ga'''},              datetime.time(7,31)],
+            [{'message': u'''lta do 7:31pm Saindo da'''},               datetime.time(19,31)],
+            [{'message': u'''volta do 7:31pm Saindoaga'''},             datetime.time(19,31)],
+            [{'message': u'''volta do 7h31 pm Saindas  vagas'''},       datetime.time(19,31)],
+            [{'message': u'''volta do 17:31 horas S. três  vagas'''},   datetime.time(17,31)],
+            [{'message': u'''volta do 10 horas Sainuatro  vagas'''},    datetime.time(10,0)],
+            [{'message': u'''ta do 10pm Saindo do m'''},                datetime.time(22,0)],
+            [{'message': u'''lta do 10 am Saindo doas'''},              datetime.time(10,0)],
+            [{'message': u'''a do 10 p.m. Saindo doas'''},              datetime.time(22,0)],
+            [{'message': u'''a do 10:06 p.m. Saindomegas'''},           datetime.time(22,6)],
+            [{'message': u'''a do 10:06p.m. Saindo egas'''},            datetime.time(22,6)],
+            [{'message': u'''a do 10 pm. Saindo do s'''},               datetime.time(22,0)],
+            [{'message': u''' do 15:10 hrs Saindo dugares'''},          datetime.time(15,10)],
+            [{'message': u'''a do 7 am Saindo do me 4   pessoas'''},    datetime.time(7,0)],
+            [{'message': u'''a do 7 pm Saindo do me lugares'''},        datetime.time(19,0)],
+            [{'message': u'''a das 10 da manha Sainobram 2  lugares'''},datetime.time(10,0)],
+            [{'message': u'''a das 3 da tarde Saindbram 2  lugares'''}, datetime.time(15,0)],
+        ]
+
+        for p in example_posts:
+            post = CaronaPost(p[0])
             # pprint(post.content_clean)
-            self.assertTrue(post.retrieve_time_tags(), "found time tag")
+            self.assertTrue(post.retrieve_time_tags(), 'found tag time')
             # pprint(post.tag_time)
+            self.assertEqual(post.tag_time, p[1], 'correct time')
         return
 
     def test_origin_destiny(self):
@@ -114,4 +140,31 @@ class CaronaPostTestCase(TestCase):
             post.city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
             post.city2_list = [u'Sao Carlos',u'Sanca', u'Samca', u'SC']
             self.assertTrue(post.retrieve_origin_destiny(), 'found origin and destiny')
+        return
+    
+    
+    def test_date_tags(self):
+        example_posts = [
+            [{'message': u''' 10 de outubro'''},                          datetime.date(2013, 10, 10)],
+            [{'message': u''' 15 outubro'''},                             datetime.date(2013, 10, 15)],
+            [{'message': u''' 20/10'''},                                  datetime.date(2013, 10, 20)],
+            [{'message': u'''Sexta, dia 04 outubro '''},                  datetime.date(2013, 10, 4)],
+            [{'message': u'''04/Out (Sexta-feira)'''},                    datetime.date(2013, 10, 4)],
+            [{'message': u'''QUINTA 03/10'''},                            datetime.date(2013, 10, 3)],
+            [{'message': u'''sexta 04/10/2013'''},                        datetime.date(2013, 10, 4)],
+            [{'message': u'''sexta feira(04/10)'''},                      datetime.date(2013, 10, 4)],
+            [{'message': u'''sexta, dia 4, 12:00.'''},                    datetime.date(2013, 10, 4)],
+            [{'message': u'''na sexta, 4'''},                             datetime.date(2013, 10, 4)],
+            [{'message': u''' sexta, 04,'''},                             datetime.date(2013, 10, 4)],
+            [{'message': u'''SEXTA FEIRA DIA 4'''},                       datetime.date(2013, 10, 4)],
+            [{'message': u'''amanha'''},                                  datetime.date(2013, 10, 3)],
+            [{'message': u'''sexta após às 18:00 ou sábado de manha'''},  datetime.date(2013, 10, 4)],
+            [{'message': u'''sexta a noite ou sábado'''},                 datetime.date(2013, 10, 4)],
+        ]
+
+        for p in example_posts:
+            post = CaronaPost(p[0])
+            post.creation_date = datetime.date(2013, 10, 2)
+            self.assertTrue(post.retrieve_date_tags(), 'retrieve tags')
+            self.assertEquals(post.tag_date, p[1], 'retrieve tags')
         return

@@ -20,7 +20,7 @@ import subprocess
 import warnings
 
 # Keep Facebook settings like APP_ID
-import settings
+import configuration
 import os
 
 
@@ -30,8 +30,8 @@ warnings.filterwarnings('ignore', category=DeprecationWarning)
 
 
 # Trying to get an access token. Very awkward.
-oauth_args = dict(client_id=settings.DEV_FB_APP_ID,
-                  client_secret=settings.DEV_FB_APP_SECRET,
+oauth_args = dict(client_id=configuration.DEV_FB_APP_ID,
+                  client_secret=configuration.DEV_FB_APP_SECRET,
                   grant_type='client_credentials')
 oauth_curl_cmd = ['curl',
                   'https://graph.facebook.com/oauth/access_token?' + urllib.urlencode(oauth_args)]
@@ -46,7 +46,7 @@ except KeyError:
     exit()
 
 # facebook_graph = facebook.GraphAPI(oauth_access_token)
-facebook_graph = facebook.GraphAPI(settings.LONG_LIVED_OAUTH_TOKEN)
+facebook_graph = facebook.GraphAPI(configuration.LONG_LIVED_OAUTH_TOKEN)
 
 # Try to post something on the wall.
 try:
