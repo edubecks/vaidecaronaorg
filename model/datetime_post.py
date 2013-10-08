@@ -11,6 +11,7 @@ class DateTimePost(Post):
         super(DateTimePost, self).__init__(info)
         self.tag_time = None
         self.tag_date = None
+        self.post_date = None
         return
 
     def retrieve_time_tags(self):
@@ -24,6 +25,24 @@ class DateTimePost(Post):
         7pm
 
         """
+
+        ## am pm
+        regex_am_pm_time = [
+            r'(\d{1,2})([h|:]\d{2})?\s*?(am|pm|a\.m|p\.m)',
+        ]
+        for regex_expression in regex_am_pm_time:
+            regex = re.compile(regex_expression)
+            match = regex.search(self.content_clean)
+            if match:
+                ## am/pm tag
+                # print match.groups(), match.lastindex
+                ampm = match.group(3) if match.lastindex == 3 else match.group(2)
+                hour = int(match.group(1)) if (ampm == 'am' or ampm == 'a.m') else int(match.group(1)) + 12
+                minutes = int(match.group(2)[1:]) if match.group(2) else 0
+                # print ampm, hour, minutes
+                # print(regex_expression, hour, minutes)
+                self.tag_time = datetime.time(hour, minutes)
+                return True
 
         ## 24h
         regex_24h_time = [
@@ -44,24 +63,6 @@ class DateTimePost(Post):
                 self.tag_time = datetime.time(hour, minutes)
                 return True
 
-        ## am pm
-        regex_am_pm_time = [
-            r'(\d{1,2})(:\d{2})?\s*?(am|pm|a\.m|p\.m)',
-        ]
-        for regex_expression in regex_am_pm_time:
-            regex = re.compile(regex_expression)
-            match = regex.search(self.content_clean)
-            if match:
-
-                ## am/pm tag
-                # print match.groups(), match.lastindex
-                ampm = match.group(3) if match.lastindex == 3 else match.group(2)
-                hour = int(match.group(1)) if ampm == 'am' else int(match.group(1)) + 12
-                minutes = int(match.group(2)[1:]) if match.group(2) else 0
-                # print ampm, hour, minutes
-                # print(regex_expression, hour, minutes)
-                self.tag_time = datetime.time(hour, minutes)
-                return True
 
         ## not found
         return False
@@ -82,6 +83,10 @@ class DateTimePost(Post):
             if match:
                 day = int(match.group(1))
                 month = int(match.group(2))
-                print(regex_expression, day, month)
+                # print(regex_expression, day, month)
                 self.tag_date = datetime.date(2013, month, day)
-        return
+                return True
+
+
+
+        return False
