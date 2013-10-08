@@ -156,6 +156,7 @@ class CaronaPostTestCase(TestCase):
             [{'message': u'''sexta, dia 4, 12:00.'''},                    datetime.date(2013, 10, 4)],
             [{'message': u'''na sexta, 4'''},                             datetime.date(2013, 10, 4)],
             [{'message': u''' sexta, 04,'''},                             datetime.date(2013, 10, 4)],
+            [{'message': u''' 6a feira'''},                             datetime.date(2013, 10, 4)],
             [{'message': u'''SEXTA FEIRA DIA 4'''},                       datetime.date(2013, 10, 4)],
             [{'message': u'''amanha'''},                                  datetime.date(2013, 10, 3)],
             [{'message': u'''sexta após às 18:00 ou sábado de manha'''},  datetime.date(2013, 10, 4)],
@@ -165,6 +166,6 @@ class CaronaPostTestCase(TestCase):
         for p in example_posts:
             post = CaronaPost(p[0])
             post.creation_date = datetime.date(2013, 10, 2)
-            self.assertTrue(post.retrieve_date_tags(), 'retrieve tags')
-            self.assertEquals(post.tag_date, p[1], 'retrieve tags')
+            self.assertTrue(post.retrieve_date_tags(), 'retrieve date tags')
+            self.assertEquals(post.tag_date, p[1], 'retrieve correct tag date')
         return

@@ -178,20 +178,20 @@ class CaronaPost(DateTimePost):
                 return True
 
         regex_named_dates = [
-           r'(seg)(?:unda)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
-             r'(ter)(?:ca)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
-            r'(qua)(?:rta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-            r'(qui)(?:nta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-             r'(sex)(?:ta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
+            r'(seg|2da|2a)(?:unda)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
+            r'(ter|3ca|3a)(?:ca)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
+            r'(qua|4ta|4a)(?:rta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(qui|5ta|5a)(?:nta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(sex|6ta|6a)(?:ta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
             r'(sab)(?:ado)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-           r'(dom)(?:ingo)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
+            r'(dom)(?:ingo)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
         ]
 
         for day, regex_expression in enumerate(regex_named_dates):
             # print day, regex_expression
             regex = re.compile(regex_expression, re.IGNORECASE)
             match = regex.search(self.content_clean)
-            # print self.content_clean
+            print self.content_clean
             # print regex_expression
             if match:
                 # print match.groups(), match.lastindex
@@ -201,10 +201,10 @@ class CaronaPost(DateTimePost):
                     d += datetime.timedelta(1)
                     max_days-=1
                 self.tag_date = d
-                # print self.tag_date
+                print self.tag_date
                 # day = int(match.group(1))
                 # month = i + 1
-                # print(regex_expression, day, month)
+                # print(regex_expression, day)
                 # self.tag_date = datetime.date(2013, month, day)
                 return True
 
