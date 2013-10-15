@@ -12,6 +12,11 @@ class DateTimePost(Post):
         self.tag_time = None
         self.tag_date = None
         self.post_date = None
+
+        ## creation_date
+        if 'created_time' in info:
+            self.creation_date = datetime.datetime.strptime(info['created_time'], '%Y-%m-%dT%H:%M:%S+0000')
+            print self.creation_date
         return
 
     def retrieve_time_tags(self):
@@ -51,7 +56,7 @@ class DateTimePost(Post):
             # r'(\d{2})\s*horas',
             # r'(\d{2})\s*hrs',
             r'(\d{1,2})(h\d{2})',
-            r'(\d{2}):(\d{2})',
+            r'(\d{2})(:\d{2})',
         ]
         for regex_expression in regex_24h_time:
             regex = re.compile(regex_expression)

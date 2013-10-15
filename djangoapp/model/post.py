@@ -15,10 +15,14 @@ class Post(object):
         self._info = info
         self.tags = []
 
-
         ## post content
         self.content = self._info['message']
-        self.content_clean = unidecode.unidecode(self._info['message'].lower())
+        self.content_clean = unidecode.unidecode(self._info['message']).lower()
+
+        ##post info
+        if 'id' in self._info:
+            self.fb_group_id, self.fb_post_id = self._info['id'][:self._info['id'].index('_')], self._info['id']
+            print self.fb_group_id
 
         ## post comments
         self.comments = []

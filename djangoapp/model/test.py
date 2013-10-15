@@ -1,5 +1,4 @@
 # coding: utf-8
-import os
 
 __author__ = 'edubecks'
 
@@ -21,7 +20,6 @@ import warnings
 
 # Keep Facebook settings like APP_ID
 import configuration
-import os
 
 
 

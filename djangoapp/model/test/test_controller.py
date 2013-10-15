@@ -1,14 +1,11 @@
 # coding: utf-8
 from admin import Admin
 from datetime_post import DateTimePost
-from fb_api_manager import FBAPIManager
-from post import Post
+from fb_groups.fb_api_manager import FBAPIManager
 from reader import Reader
 
 __author__ = 'edubecks'
 
-
-from pprint import pprint
 from unittest import TestCase
 
 class ControllerTestCase(TestCase):

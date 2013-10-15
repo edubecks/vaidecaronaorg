@@ -1,6 +1,6 @@
 # coding: utf-8
 import datetime
-from caronasbrasil.carona_post import CaronaPost
+from model.caronasbrasil.carona_post import CaronaPost
 
 __author__ = 'edubecks'
 
@@ -141,8 +141,8 @@ class CaronaPostTestCase(TestCase):
             post.city2_list = [u'Sao Carlos',u'Sanca', u'Samca', u'SC']
             self.assertTrue(post.retrieve_origin_destiny(), 'found origin and destiny')
         return
-    
-    
+
+
     def test_date_tags(self):
         example_posts = [
             [{'message': u''' 10 de outubro'''},                          datetime.date(2013, 10, 10)],
@@ -161,6 +161,7 @@ class CaronaPostTestCase(TestCase):
             [{'message': u'''amanha'''},                                  datetime.date(2013, 10, 3)],
             [{'message': u'''sexta após às 18:00 ou sábado de manha'''},  datetime.date(2013, 10, 4)],
             [{'message': u'''sexta a noite ou sábado'''},                 datetime.date(2013, 10, 4)],
+            [{'message': u'''sexta-feira, apos as 22h30 ou sabado o mais cedo possivel!'''},datetime.date(2013, 10, 4)],
         ]
 
         for p in example_posts:
@@ -168,4 +169,67 @@ class CaronaPostTestCase(TestCase):
             post.creation_date = datetime.date(2013, 10, 2)
             self.assertTrue(post.retrieve_date_tags(), 'retrieve date tags')
             self.assertEquals(post.tag_date, p[1], 'retrieve correct tag date')
+        return
+
+    def test_entire_post(self):
+        example_posts = [
+            {
+                'post': {
+                    'message':('Minha amiga OFERECE carona SP -> SC.\n'
+                      'Dia: 10/10 (Quinta Feira)\n'
+                      'Hora: 11:30\n'
+                      'Vagas: 2\n'
+                      'Pega: Metro Barra Funda\n'
+                      'Deixa: Em casa.\n'
+                      'Preço: R$ 30,00\n'
+                )},
+                 'datetime':datetime.datetime(2013,10,10,11,30),
+                 'vagas': 2,
+                 'ofereco_procuro': 'oferecer',
+                 'origin': 'sao paulo',
+                 'destiny': 'sao carlos'
+            },
+            {
+                'post': {
+                    'message':"""Procuro carona! Quinta-Feira, dia 10/10.
+São Paulo -> São Carlos
+Depois do almoço !"""},
+                 'datetime':datetime.datetime(2013,10,10,11,30),
+                 'ofereco_procuro': 'procurar',
+                 'origin': 'sao carlos',
+                 'destiny': 'sao paulo'
+            },
+        ]
+
+        cities = [
+            [u'sao paulo',  u'Sanpa', u'Sampa', u'Sao Paulo', u'SP'],
+            [u'sao carlos', u'Sanca', u'Samca', u'Sao Carlos', u'SC']
+        ]
+
+        for p in example_posts:
+            post = CaronaPost(p['post'])
+            ## settings cities
+            post.city1_list = cities[0]
+            post.city2_list = cities[1]
+            ## datetime
+            self.assertTrue(post.retrieve_time_tags(), 'retrieve time tags')
+            self.assertTrue(post.retrieve_date_tags(), 'retrieve date tags')
+            print post.tag_time, post.tag_date
+            self.assertEquals(post.tag_datetime, p['datetime'], 'retrieve date tags')
+            ## vagas
+            self.assertTrue(post.retrieve_vagas(), 'retrieve vagas')
+            print post.tag_num_vagas
+            self.assertEquals(post.tag_num_vagas, p['vagas'], 'retrieve date tags')
+            ## ofereco / procuro
+            self.assertTrue(post.retrieve_ofereco_procuro_tag(), 'ofereco/procuro vagas')
+            print post.tag_ofereco_procuro
+            self.assertEquals(post.tag_ofereco_procuro, p['ofereco_procuro'], 'retrieve date tags')
+            ## origin / destiny
+            self.assertTrue(post.retrieve_origin_destiny(), 'origin/destiny vagas')
+            print post.tag_origin, '-->', post.tag_destiny
+            self.assertEquals(post.tag_origin, p['origin'], 'origin tags')
+            self.assertEquals(post.tag_destiny, p['destiny'], 'destiny tags')
+
+
+
         return

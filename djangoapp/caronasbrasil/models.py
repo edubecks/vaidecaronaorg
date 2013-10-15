@@ -1,9 +1,17 @@
 from django.db import models
 
 # Create your models here.
-class Carona(models.Model):
+class CaronaModel(models.Model):
+    fb_post_id = models.CharField(max_length=40)
+    fb_group_id = models.CharField(max_length=20)
     origin = models.CharField(max_length=30)
     destiny = models.CharField(max_length=30)
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now=False)
     ofereco_procuro = models.CharField(max_length=1) ## o: ofereco, p: procuro
     num_vagas = models.PositiveSmallIntegerField()
+
+
+class CaronaGroupModel(models.Model):
+    fb_group_id = models.CharField(max_length=20)
+    city1 = models.CharField(max_length=200)
+    city2 = models.CharField(max_length=200)

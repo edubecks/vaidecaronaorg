@@ -1,5 +1,5 @@
 # coding: utf-8
-from datetime_post import DateTimePost
+from model.datetime_post import DateTimePost
 
 __author__ = 'edubecks'
 

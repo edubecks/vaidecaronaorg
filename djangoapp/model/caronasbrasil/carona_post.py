@@ -3,7 +3,7 @@ import collections
 from pprint import pprint
 import re
 import datetime
-from datetime_post import DateTimePost
+from model.datetime_post import DateTimePost
 
 __author__ = 'edubecks'
 
@@ -11,15 +11,22 @@ __author__ = 'edubecks'
 class CaronaPost(DateTimePost):
     def __init__(self, info):
         super(CaronaPost, self).__init__(info)
+        self.fb_id = None
         self.tag_ofereco_procuro = ''
-        self.tag_time = ''
+        self.tag_time = None
         self.tag_origin = ''
         self.tag_destiny = ''
         self.tag_date = ''
+        self.tag_num_vagas = 1
         self.city1_list = []
         self.city2_list = []
-        self.creation_date = None
         return
+
+    @property
+    def tag_datetime(self):
+        if self.tag_date and self.tag_time:
+            return datetime.datetime.combine(self.tag_date, self.tag_time)
+        return None
 
     def retrieve_origin_destiny(self):
 
@@ -50,7 +57,7 @@ class CaronaPost(DateTimePost):
 
         ## city1 -> city2
         for regex_expression in regex_city1_city2:
-            regex = re.compile(regex_expression, re.IGNORECASE)
+            regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
             match = regex.search(self.content_clean)
             # print regex_expression, self.content_clean
             if match:
@@ -62,7 +69,7 @@ class CaronaPost(DateTimePost):
 
         ## city2-> city1
         for regex_expression in regex_city2_city1:
-            regex = re.compile(regex_expression, re.IGNORECASE)
+            regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
             match = regex.search(self.content_clean)
             # print regex_expression, self.content_clean
             if match:
@@ -85,7 +92,7 @@ class CaronaPost(DateTimePost):
             r'(\d{1,2})\s*?(da manha|da tarde|da noite)',
         ]
         for regex_expression in regex_am_pm_time:
-            regex = re.compile(regex_expression)
+            regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
             match = regex.search(self.content_clean)
             if match:
                 hour = int(match.group(1)) if match.group(2) == 'da manha' else int(match.group(1)) + 12
@@ -101,14 +108,14 @@ class CaronaPost(DateTimePost):
     def retrieve_ofereco_procuro_tag(self):
 
         ## procurar
-        procurar_tags = ['procuro', 'busco']
+        procurar_tags = ['procur', 'busc']
         for t in procurar_tags:
             if t in self.content_clean:
                 self.tag_ofereco_procuro = 'procurar'
                 return True
 
         ## oferecer
-        oferecer_tags = ['ofereco']
+        oferecer_tags = ['oferec']
         for t in oferecer_tags:
             if t in self.content_clean:
                 self.tag_ofereco_procuro = 'oferecer'
@@ -119,12 +126,13 @@ class CaronaPost(DateTimePost):
     def retrieve_vagas(self):
 
         regex_vagas = [
-            r'(\d{1,2})\s*?(vaga|lugar|pessoa)',
-            r'(uma)\s*?(vaga|lugar|pessoa)',
-            r'(duas)\s*?(vaga|pessoa)',
-            r'(dois)\s*?(lugar)',
-            r'(tres)\s*?(vaga|lugar|pessoa)',
-            r'(quatro)\s*?(vaga|lugar|pessoa)',
+            r'(\d{1,2}) *?(vaga|lugar|pessoa)',
+            r'(?:vaga|lugar|pessoa)(?:es|s)?:? *(\d{1,2})',
+            r'(uma) *?(vaga|lugar|pessoa)',
+            r'(duas) *?(vaga|pessoa)',
+            r'(dois) *?(lugar)',
+            r'(tres) *?(vaga|lugar|pessoa)',
+            r'(quatro) *?(vaga|lugar|pessoa)',
         ]
 
         numbers = {
@@ -138,6 +146,7 @@ class CaronaPost(DateTimePost):
             regex = re.compile(regex_expression, re.IGNORECASE)
             match = regex.search(self.content_clean)
             if match:
+                # print regex_expression, self.content_clean
                 try:
                     self.tag_num_vagas = int(match.group(1))
                 except ValueError:
@@ -166,7 +175,7 @@ class CaronaPost(DateTimePost):
             r'(\d{1,2})\s*?(?:de|\/)?\s*?(dez)(?:embro)?',
         ]
         for i, regex_expression in enumerate(regex_date):
-            regex = re.compile(regex_expression, re.IGNORECASE)
+            regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
             match = regex.search(self.content_clean)
             # print self.content_clean
             if match:
@@ -189,9 +198,9 @@ class CaronaPost(DateTimePost):
 
         for day, regex_expression in enumerate(regex_named_dates):
             # print day, regex_expression
-            regex = re.compile(regex_expression, re.IGNORECASE)
+            regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
             match = regex.search(self.content_clean)
-            print self.content_clean
+            # print self.content_clean
             # print regex_expression
             if match:
                 # print match.groups(), match.lastindex
@@ -201,7 +210,7 @@ class CaronaPost(DateTimePost):
                     d += datetime.timedelta(1)
                     max_days-=1
                 self.tag_date = d
-                print self.tag_date
+                # print self.tag_date
                 # day = int(match.group(1))
                 # month = i + 1
                 # print(regex_expression, day)
@@ -220,8 +229,15 @@ class CaronaPost(DateTimePost):
         ## nothing found
         return False
 
-
-
-
+    def __str__(self):
+        return str({
+            'ofereco/procuro': self.tag_ofereco_procuro,
+            'from': self.tag_origin,
+            'to': self.tag_destiny,
+            'datetime': self.tag_datetime,
+            'date': self.tag_date,
+            'time': self.tag_time,
+            'num_vagas': self.tag_num_vagas
+        })
 
 

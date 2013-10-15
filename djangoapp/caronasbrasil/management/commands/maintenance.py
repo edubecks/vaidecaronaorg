@@ -23,7 +23,6 @@ class Command(BaseCommand):
     # )
 
     def handle(self, *args, **options):
-
         fb_group_id = '641749869191341'
         city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
         city2_list = [u'Sao Carlos', u'Sanca', u'Samca', u'SC']
