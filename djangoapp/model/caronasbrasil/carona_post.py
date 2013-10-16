@@ -14,6 +14,7 @@ class CaronaPost(DateTimePost):
         self.fb_id = None
         self.tag_ofereco_procuro = ''
         self.tag_time = None
+        self.tag_time_until = None
         self.tag_origin = ''
         self.tag_destiny = ''
         self.tag_date = ''
@@ -24,9 +25,7 @@ class CaronaPost(DateTimePost):
 
     @property
     def tag_datetime(self):
-        if self.tag_date and self.tag_time:
-            return datetime.datetime.combine(self.tag_date, self.tag_time)
-        return None
+        return self.tag_time
 
     def retrieve_origin_destiny(self):
 
@@ -99,10 +98,75 @@ class CaronaPost(DateTimePost):
                 hour = int(match.group(1)) if match.group(2) == 'da manha' else int(match.group(1)) + 12
                 minutes = 0
                 # print(regex_expression, hour, minutes)
-                self.tag_time = datetime.time(hour, minutes)
+                self.tag_time = datetime.datetime.combine(self.tag_date,
+                                                          datetime.time(hour, minutes))
                 return True
 
         ## not found time
+        return False
+
+    def retrieve_time_interval(self):
+
+        ## after time
+        regex_after_time = [
+            r'(?:depois|a partir) das (\d{1,2})\s*(hrs|horas|h |hs)',
+            r'(?:depois|a partir) das (\d{1,2})\s*(am|pm|a\.m|p\.m)',
+            r'(?:depois|a partir) das (\d{1,2})()', ## () for simplicity in group capturing
+        ]
+        for regex_expression in regex_after_time:
+            regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
+            match = regex.search(self.content_clean)
+            # print(self.content_clean)
+            if match:
+                ampm = match.group(2)
+                hour = int(match.group(1))
+                hour = hour + 12 if ampm == 'pm' or ampm == 'p.m' else hour
+                minutes = 0
+                # print(regex_expression, hour, minutes)
+                self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(hour, minutes))
+                ## default time interval
+                self.tag_time_until = datetime.datetime.combine(self.tag_date,
+                                                                datetime.time(23, 59))
+                return True
+
+        ## until time
+        regex_after_time = [
+            r'(?:ate) as (\d{1,2})\s*(hrs|horas|h |hs)',
+            r'(?:ate) as (\d{1,2})\s*(am|pm|a\.m|p\.m)',
+        ]
+        for regex_expression in regex_after_time:
+            regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
+            match = regex.search(self.content_clean)
+            # print(self.content_clean)
+            if match:
+                ampm = match.group(2)
+                hour = int(match.group(1))
+                hour = hour + 12 if ampm == 'pm' or ampm == 'p.m' else hour
+                minutes = 0
+                # print(regex_expression, hour, minutes)
+                self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(0, 0))
+                ## default time interval
+                self.tag_time_until = datetime.datetime.combine(self.tag_date,
+                                                                datetime.time(hour, minutes))
+                return True
+
+        ## any time
+        interval_time_indentifiers = [
+            'qualquer hora',
+            'qualquer horario',
+        ]
+        for t in interval_time_indentifiers:
+            if t in self.content_clean:
+                ## default time interval
+                self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(0, 0))
+                self.tag_time_until = datetime.datetime.combine(self.tag_date,
+                                                                datetime.time(23, 59))
+                return True
+
+        ## default
+        if self.tag_time:
+            self.tag_time_until =  self.tag_time + datetime.timedelta(hours= 1)
+
         return False
 
 

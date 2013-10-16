@@ -86,37 +86,41 @@ class CaronaPostTestCase(TestCase):
         return
 
     def test_time(self):
+        
+        datetime_today = datetime.datetime.now()
 
         example_posts = [
-            [{'message': u'''hoje (quinta-feira, 10/10), as 19hs.'''}, datetime.time(19, 0)],
-            [{'message': u'''sp\nsabado, 12/10, as 15h\nbusco '''}, datetime.time(15, 0)],
-            [{'message': u'''Por volta do 7:31hrs S. 1 vaga'''},        datetime.time(7,31)],
-            [{'message': u'''a do 7:31 hrs Saindo da'''},               datetime.time(7,31)],
-            [{'message': u''' volta do 7:31 h Saindvaga'''},            datetime.time(7,31)],
-            [{'message': u'''volta do 7:31h Saindo ga'''},              datetime.time(7,31)],
-            [{'message': u'''lta do 7:31pm Saindo da'''},               datetime.time(19,31)],
-            [{'message': u'''volta do 7:31pm Saindoaga'''},             datetime.time(19,31)],
-            [{'message': u'''volta do 7h31 pm Saindas  vagas'''},       datetime.time(19,31)],
-            [{'message': u'''volta do 17:31 horas S. três  vagas'''},   datetime.time(17,31)],
-            [{'message': u'''volta do 10 horas Sainuatro  vagas'''},    datetime.time(10,0)],
-            [{'message': u'''ta do 10pm Saindo do m'''},                datetime.time(22,0)],
-            [{'message': u'''lta do 10 am Saindo doas'''},              datetime.time(10,0)],
-            [{'message': u'''a do 10 p.m. Saindo doas'''},              datetime.time(22,0)],
-            [{'message': u'''a do 10:06 p.m. Saindomegas'''},           datetime.time(22,6)],
-            [{'message': u'''a do 10:06p.m. Saindo egas'''},            datetime.time(22,6)],
-            [{'message': u'''a do 10 pm. Saindo do s'''},               datetime.time(22,0)],
-            [{'message': u''' do 15:10 hrs Saindo dugares'''},          datetime.time(15,10)],
-            [{'message': u'''a do 7 am Saindo do me 4   pessoas'''},    datetime.time(7,0)],
-            [{'message': u'''a do 7 pm Saindo do me lugares'''},        datetime.time(19,0)],
-            [{'message': u'''a das 10 da manha Sainobram 2  lugares'''},datetime.time(10,0)],
-            [{'message': u'''a das 3 da tarde Saindbram 2  lugares'''}, datetime.time(15,0)],
+            [{'message': u'''hoje (quinta-feira, 10/10), as 19hs.'''},  datetime.datetime.combine(datetime_today, datetime.time(19, 0))],
+            [{'message': u'''sp\nsabado, 12/10, as 15h\nbusco '''},     datetime.datetime.combine(datetime_today, datetime.time(15, 0))],
+            [{'message': u'''Por volta do 7:31hrs S. 1 vaga'''},        datetime.datetime.combine(datetime_today, datetime.time(7,31))],
+            [{'message': u'''a do 7:31 hrs Saindo da'''},               datetime.datetime.combine(datetime_today, datetime.time(7,31))],
+            [{'message': u''' volta do 7:31 h Saindvaga'''},            datetime.datetime.combine(datetime_today, datetime.time(7,31))],
+            [{'message': u'''volta do 7:31h Saindo ga'''},              datetime.datetime.combine(datetime_today, datetime.time(7,31))],
+            [{'message': u'''lta do 7:31pm Saindo da'''},               datetime.datetime.combine(datetime_today, datetime.time(19,31))],
+            [{'message': u'''volta do 7:31pm Saindoaga'''},             datetime.datetime.combine(datetime_today, datetime.time(19,31))],
+            [{'message': u'''volta do 7h31 pm Saindas  vagas'''},       datetime.datetime.combine(datetime_today, datetime.time(19,31))],
+            [{'message': u'''volta do 17:31 horas S. três  vagas'''},   datetime.datetime.combine(datetime_today, datetime.time(17,31))],
+            [{'message': u'''volta do 10 horas Sainuatro  vagas'''},    datetime.datetime.combine(datetime_today, datetime.time(10,0))],
+            [{'message': u'''ta do 10pm Saindo do m'''},                datetime.datetime.combine(datetime_today, datetime.time(22,0))],
+            [{'message': u'''lta do 10 am Saindo doas'''},              datetime.datetime.combine(datetime_today, datetime.time(10,0))],
+            [{'message': u'''a do 10 p.m. Saindo doas'''},              datetime.datetime.combine(datetime_today, datetime.time(22,0))],
+            [{'message': u'''a do 10:06 p.m. Saindomegas'''},           datetime.datetime.combine(datetime_today, datetime.time(22,6))],
+            [{'message': u'''a do 10:06p.m. Saindo egas'''},            datetime.datetime.combine(datetime_today, datetime.time(22,6))],
+            [{'message': u'''a do 10 pm. Saindo do s'''},               datetime.datetime.combine(datetime_today, datetime.time(22,0))],
+            [{'message': u''' do 15:10 hrs Saindo dugares'''},          datetime.datetime.combine(datetime_today, datetime.time(15,10))],
+            [{'message': u'''a do 7 am Saindo do me 4   pessoas'''},    datetime.datetime.combine(datetime_today, datetime.time(7,0))],
+            [{'message': u'''a do 7 pm Saindo do me lugares'''},        datetime.datetime.combine(datetime_today, datetime.time(19,0))],
+            [{'message': u'''a das 10 da manha Sainobram 2  lugares'''},datetime.datetime.combine(datetime_today, datetime.time(10,0))],
+            [{'message': u'''a das 3 da tarde Saindbram 2  lugares'''}, datetime.datetime.combine(datetime_today, datetime.time(15,0))],
         ]
 
         for p in example_posts:
             post = CaronaPost(p[0])
+            ## just for testing
+            post.tag_date = datetime_today
             # pprint(post.content_clean)
             self.assertTrue(post.retrieve_time_tags(), 'found tag time')
-            # pprint(post.tag_time)
+            # print(post.tag_time, 'vs' , p[1])
             self.assertEqual(post.tag_time, p[1], 'correct time')
         return
 

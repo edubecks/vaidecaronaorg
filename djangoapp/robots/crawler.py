@@ -9,6 +9,9 @@ __author__ = 'edubecks'
 class Crawler(object):
 
     def __init__(self):
+        return
+
+    def log_not_parsed_post(self,carona_post):
 
         return
 
@@ -39,6 +42,9 @@ class Crawler(object):
 
                  ## date / time
                 has_date_tag = carona_post.retrieve_date_tags()
+                if not has_date_tag:
+                    self.log_not_parsed_post(carona_post)
+                    break
                 has_time_tag = carona_post.retrieve_time_tags()
 
                 ## origin_destiny
@@ -62,6 +68,7 @@ class Crawler(object):
                     pprint(carona_post.content_clean)
                     pprint(str(carona_post))
                     print('*******************************************')
+                    self.log_not_parsed_post(carona_post)
 
 
         return

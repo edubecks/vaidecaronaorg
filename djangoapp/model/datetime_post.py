@@ -46,7 +46,8 @@ class DateTimePost(Post):
                 minutes = int(match.group(2)[1:]) if match.group(2) else 0
                 # print ampm, hour, minutes
                 # print(regex_expression, hour, minutes)
-                self.tag_time = datetime.time(hour, minutes)
+                self.tag_time = datetime.datetime.combine(self.tag_date,
+                                                                datetime.time(hour, minutes))
                 return True
 
         ## 24h
@@ -65,7 +66,8 @@ class DateTimePost(Post):
                 hour = int(match.group(1))
                 minutes = int(match.group(2)[1:]) if match.lastindex == 2 else 0
                 # print(regex_expression, hour, minutes)
-                self.tag_time = datetime.time(hour, minutes)
+                self.tag_time = datetime.datetime.combine(self.tag_date,
+                                                          datetime.time(hour, minutes))
                 return True
 
 
