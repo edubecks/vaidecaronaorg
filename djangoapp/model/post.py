@@ -17,7 +17,7 @@ class Post(object):
 
         ## post content
         self.content = self._info['message']
-        self.content_clean = unidecode.unidecode(self._info['message']).lower()
+        self.content_clean = unidecode.unidecode(self._info['message']).lower().replace('\n', ' ')
 
         ##post info
         if 'id' in self._info:

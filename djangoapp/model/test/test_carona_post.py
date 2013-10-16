@@ -88,6 +88,8 @@ class CaronaPostTestCase(TestCase):
     def test_time(self):
 
         example_posts = [
+            [{'message': u'''hoje (quinta-feira, 10/10), as 19hs.'''}, datetime.time(19, 0)],
+            [{'message': u'''sp\nsabado, 12/10, as 15h\nbusco '''}, datetime.time(15, 0)],
             [{'message': u'''Por volta do 7:31hrs S. 1 vaga'''},        datetime.time(7,31)],
             [{'message': u'''a do 7:31 hrs Saindo da'''},               datetime.time(7,31)],
             [{'message': u''' volta do 7:31 h Saindvaga'''},            datetime.time(7,31)],

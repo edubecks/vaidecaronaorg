@@ -51,7 +51,7 @@ class DateTimePost(Post):
 
         ## 24h
         regex_24h_time = [
-            r'(\d{1,2})(:\d{2})?\s*?(?:hrs|horas|h )',
+            r'(\d{1,2})(:\d{2})?\s*?(?:hrs|horas|h |hs)',
             # r'(\d{2})h\s',
             # r'(\d{2})\s*horas',
             # r'(\d{2})\s*hrs',
