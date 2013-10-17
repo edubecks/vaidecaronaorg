@@ -23,7 +23,7 @@ DB_USER =       os.getenv('CARONAS_BRASIL_DB_USER')
 DB_PASSWORD =   os.getenv('CARONAS_BRASIL_DB_PASSWORD')
 DB_HOST =       os.getenv('CARONAS_BRASIL_DB_HOST')
 DB_PORT =       os.getenv('CARONAS_BRASIL_DB_PORT')
-print DB_NAME, DB_USER
+# print DB_NAME, DB_USER
 
 if DEBUG:
 
@@ -79,14 +79,18 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+PROJECT_DIR = os.path.abspath(os.path.join(PROJECT_ROOT, os.path.pardir))
+#PROJECT_DIR = os.path.join(PROJECT_ROOT,'../blogapp')
+STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, 'staticfiles/'))
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    os.path.abspath(os.path.join(PROJECT_DIR, 'static/')),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -125,8 +129,7 @@ ROOT_URLCONF = 'djangoapp.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'djangoapp.wsgi.application'
 
-import os
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
+TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..//', 'templates').replace('\\','/'),)
 
 INSTALLED_APPS = (
     'django.contrib.auth',

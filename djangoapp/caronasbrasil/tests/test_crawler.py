@@ -1,7 +1,7 @@
 # coding: utf-8
 # from unittest import TestCase
 from django.test import TestCase
-from caronasbrasil.models import CaronaGroupModel
+from caronasbrasil.models import CaronaGroupModel, ParserErrorsModel
 from robots.crawler import Crawler
 
 __author__ = 'edubecks'
@@ -28,4 +28,7 @@ class TestCrawler(TestCase):
 
         crawler = Crawler()
         crawler.retrieve_posts(fb_group_id)
+
+        ## test log
+        self.assertEquals(ParserErrorsModel.objects.all().count(), 1)
         return

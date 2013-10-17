@@ -1,5 +1,5 @@
 # coding: utf-8
-from caronasbrasil.models import CaronaModel, CaronaGroupModel
+from caronasbrasil.models import CaronaModel, CaronaGroupModel, ParserErrorsModel
 
 __author__ = 'edubecks'
 
@@ -32,6 +32,13 @@ class PersistenceController(object):
         city1_list = carona_group.city1.split(',')
         city2_list = carona_group.city2.split(',')
         return city1_list, city2_list
+
+    def add_parser_error(self,fb_group_id, fb_post_id, message_content):
+        return ParserErrorsModel(
+            fb_group_id=fb_group_id,
+            fb_post_id=fb_post_id,
+            content = message_content
+        ).save()
 
 
 

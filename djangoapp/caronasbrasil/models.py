@@ -15,3 +15,9 @@ class CaronaGroupModel(models.Model):
     fb_group_id = models.CharField(max_length=20)
     city1 = models.CharField(max_length=200)
     city2 = models.CharField(max_length=200)
+
+
+class ParserErrorsModel(models.Model):
+    fb_group_id = models.CharField(max_length=20)
+    fb_post_id = models.CharField(max_length=40)
+    content = models.CharField(max_length=1000)

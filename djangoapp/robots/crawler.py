@@ -1,5 +1,6 @@
 # coding: utf-8
 from pprint import pprint
+from caronasbrasil.models import ParserErrorsModel
 from model.caronasbrasil.carona_post import CaronaPost
 from model.fb_groups.fb_groups_controller import FBGroupsController
 from caronasbrasil.persistence_controller import PersistenceController
@@ -12,7 +13,7 @@ class Crawler(object):
         return
 
     def log_not_parsed_post(self,carona_post):
-
+        PersistenceController().add_parser_error(carona_post.fb_group_id, carona_post.fb_post_id, carona_post.content_clean)
         return
 
     def retrieve_posts(self, fb_group_id):
@@ -45,7 +46,9 @@ class Crawler(object):
                 if not has_date_tag:
                     self.log_not_parsed_post(carona_post)
                     break
-                has_time_tag = carona_post.retrieve_time_tags()
+                carona_post.retrieve_time_tags()
+                has_time_interval = carona_post.retrieve_time_interval()
+                has_time_tag = True if carona_post.tag_time else False
 
                 ## origin_destiny
                 has_origin_destiny =  carona_post.retrieve_origin_destiny()
@@ -57,11 +60,11 @@ class Crawler(object):
                 has_vagas = carona_post.retrieve_vagas()
 
                 ## check the tag requirements
+                print(has_date_tag, has_time_tag, has_origin_destiny, has_ofereco_procuro)
                 if has_date_tag and has_time_tag and has_origin_destiny and has_ofereco_procuro:
                     ## saving in the db
-                    pprint('---------------------')
-
                     pprint(str(carona_post))
+                    pprint('---------------------')
                     persistence.add_carona(carona_post)
                 else:
                     print('*************** wrong')
@@ -69,6 +72,8 @@ class Crawler(object):
                     pprint(str(carona_post))
                     print('*******************************************')
                     self.log_not_parsed_post(carona_post)
+            else:
+                print('post already parsed', fb_post['id'])
 
 
         return

@@ -181,11 +181,19 @@ class CaronaPost(DateTimePost):
                                                                 datetime.time(23, 59))
                 return True
 
-        print(self.content_clean)
-        print(self.tag_time)
-        ## default
+        # print(self.content_clean)
+        # print(self.tag_time)
+        ## default time: time + 1h
         if self.tag_time:
             self.tag_time_to =  self.tag_time + datetime.timedelta(hours= 1)
+            return True
+
+        ## default: anytime
+        if self.tag_date:
+            self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(0, 0))
+            self.tag_time_to = datetime.datetime.combine(self.tag_date,
+                                                         datetime.time(23, 59))
+            return True
 
         return False
 
