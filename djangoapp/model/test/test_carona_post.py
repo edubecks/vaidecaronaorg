@@ -53,11 +53,21 @@ class CaronaPostTestCase(TestCase):
         return
 
     def test_ofereco_procuro(self):
-        for p in self.posts_dict:
-            post = CaronaPost(p)
-            self.assertTrue(post.retrieve_ofereco_procuro_tag(), "found ofereco/procuro tag")
+
+        example_posts = [
+            [{'message': u''' alguma alma caridosa que mora aqui em sp vai pra la nesse dia e pode me dar uma carona'''}, 'procurar'],
+            [{'message': u''' Ofereço São Paulo -> São Carlos Se'''}, 'oferecer'],
+            [{'message': u''' Busco São Paulo -> São Carlo'''},        'procurar'],
+            [{'message': u''' Procuro São Paulo -> São Carlos Sex'''}, 'procurar'],
+            [{'message': u''' alguem indo de sao carlos para sao paulo na quarta feira? --> procurar'''}, 'procurar'],
+        ]
+
+        for p in example_posts:
+            post = CaronaPost(p[0])
+            self.assertTrue(post.retrieve_ofereco_procuro_tag(), "not found ofereco/procuro tag")
             # pprint(post.content_clean)
             # pprint(post.tag_ofereco_procuro)
+            self.assertEquals(post.tag_ofereco_procuro, p[1], 'retrieve correct tag date')
         return
 
     def test_vagas(self):
@@ -127,6 +137,7 @@ class CaronaPostTestCase(TestCase):
     def test_origin_destiny(self):
 
         example_posts = [
+            {'message': u'''São Paulo -->> São Carlos',  go Por v 2  vagas'''},
             {'message': u'''São Paulo -> São Carlos',  go Por v 2  vagas'''},
             {'message': u'''São Paulo > São Carlos' ,   Por vol 2  vagas'''},
             {'message': u'''São Paulo -> SC'        ,   Por vol2  vagas'''},
@@ -151,29 +162,34 @@ class CaronaPostTestCase(TestCase):
 
     def test_date_tags(self):
         example_posts = [
-            [{'message': u''' 10 de outubro'''},                          datetime.date(2013, 10, 10)],
-            [{'message': u''' 15 outubro'''},                             datetime.date(2013, 10, 15)],
-            [{'message': u''' 20/10'''},                                  datetime.date(2013, 10, 20)],
-            [{'message': u'''Sexta, dia 04 outubro '''},                  datetime.date(2013, 10, 4)],
-            [{'message': u'''04/Out (Sexta-feira)'''},                    datetime.date(2013, 10, 4)],
-            [{'message': u'''QUINTA 03/10'''},                            datetime.date(2013, 10, 3)],
-            [{'message': u'''sexta 04/10/2013'''},                        datetime.date(2013, 10, 4)],
-            [{'message': u'''sexta feira(04/10)'''},                      datetime.date(2013, 10, 4)],
-            [{'message': u'''sexta, dia 4, 12:00.'''},                    datetime.date(2013, 10, 4)],
-            [{'message': u'''na sexta, 4'''},                             datetime.date(2013, 10, 4)],
-            [{'message': u''' sexta, 04,'''},                             datetime.date(2013, 10, 4)],
-            [{'message': u''' 6a feira'''},                             datetime.date(2013, 10, 4)],
-            [{'message': u'''SEXTA FEIRA DIA 4'''},                       datetime.date(2013, 10, 4)],
-            [{'message': u'''amanha'''},                                  datetime.date(2013, 10, 3)],
-            [{'message': u'''sexta após às 18:00 ou sábado de manha'''},  datetime.date(2013, 10, 4)],
-            [{'message': u'''sexta a noite ou sábado'''},                 datetime.date(2013, 10, 4)],
-            [{'message': u'''sexta-feira, apos as 22h30 ou sabado o mais cedo possivel!'''},datetime.date(2013, 10, 4)],
+            [{'message': u''' 4a feira'''},                             datetime.datetime(2013, 10, 2)],
+            [{'message': u''' terça-feira,'''},                          datetime.datetime(2013, 10, 8)],
+            [{'message': u''' quarta-feira,'''},                          datetime.datetime(2013, 10, 2)],
+            [{'message': u''' 10 de outubro'''},                          datetime.datetime(2013, 10, 10)],
+            [{'message': u''' 15 outubro'''},                             datetime.datetime(2013, 10, 15)],
+            [{'message': u''' 20/10'''},                                  datetime.datetime(2013, 10, 20)],
+            [{'message': u'''Sexta, dia 04 outubro '''},                  datetime.datetime(2013, 10, 4)],
+            [{'message': u'''04/Out (Sexta-feira)'''},                    datetime.datetime(2013, 10, 4)],
+            [{'message': u'''QUINTA 03/10'''},                            datetime.datetime(2013, 10, 3)],
+            [{'message': u'''sexta 04/10/2013'''},                        datetime.datetime(2013, 10, 4)],
+            [{'message': u'''sexta feira(04/10)'''},                      datetime.datetime(2013, 10, 4)],
+            [{'message': u'''sexta, dia 4, 12:00.'''},                    datetime.datetime(2013, 10, 4)],
+            [{'message': u'''na sexta, 4'''},                             datetime.datetime(2013, 10, 4)],
+            [{'message': u''' sexta, 04,'''},                             datetime.datetime(2013, 10, 4)],
+            [{'message': u''' 6a feira'''},                             datetime.datetime(2013, 10, 4)],
+            [{'message': u'''SEXTA FEIRA DIA 4'''},                       datetime.datetime(2013, 10, 4)],
+            [{'message': u'''amanha'''},                                  datetime.datetime(2013, 10, 3)],
+            [{'message': u'''sexta após às 18:00 ou sábado de manha'''},  datetime.datetime(2013, 10, 4)],
+            [{'message': u'''sexta a noite ou sábado'''},                 datetime.datetime(2013, 10, 4)],
+            [{'message': u'''sexta-feira, apos as 22h30 ou sabado o mais cedo possivel!'''},datetime.datetime(2013, 10, 4)],
         ]
 
         for p in example_posts:
             post = CaronaPost(p[0])
-            post.creation_date = datetime.date(2013, 10, 2)
+            post.creation_date = datetime.datetime(2013, 10, 2)
             self.assertTrue(post.retrieve_date_tags(), 'retrieve date tags')
+            # print(post.content_clean)
+            # print(post.tag_date)
             self.assertEquals(post.tag_date, p[1], 'retrieve correct tag date')
         return
 
@@ -236,6 +252,57 @@ Depois do almoço !"""},
             self.assertEquals(post.tag_origin, p['origin'], 'origin tags')
             self.assertEquals(post.tag_destiny, p['destiny'], 'destiny tags')
 
+        return
 
+    def test_intervals(self):
+        datetime_today = datetime.datetime.now()
+        example_posts = [
+            [
+                {'message': u'''terça (01/10) a qualquer hora.'''},
+                datetime.datetime.combine(datetime_today, datetime.time(0, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(23, 59))
+            ],
+            [
+                {'message': u'''terça (01/10) a qualquer horario.'''},
+                datetime.datetime.combine(datetime_today, datetime.time(0, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(23, 59))
+            ],
+            [
+                {'message': u'''saindo até 12hrs.'''},
+                datetime.datetime.combine(datetime_today, datetime.time(0, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(12, 0))
+            ],
+            [
+                {'message': u'''Procuro São Carlos - São Paulo para amanhã (01/10) depois das 16!.'''},
+                datetime.datetime.combine(datetime_today, datetime.time(16, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(23, 59))
+            ],
+            [
+                {'message': u''''sao paulo - sao carlos na terca-feira 15/10 a partir das 18h.'''},
+                datetime.datetime.combine(datetime_today, datetime.time(18, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(23, 59))
+            ],
+            [
+                {'message': u''''14h/15h'''},
+                datetime.datetime.combine(datetime_today, datetime.time(14, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(15, 0 ))
+            ],
+            [
+                {'message': u''''dia 26 de outubro eu queria ... pode me dar uma carona --> qualquer hora'''},
+                datetime.datetime.combine(datetime_today, datetime.time(0, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(23, 59 ))
+            ],
+        ]
 
+        for p in example_posts:
+            post = CaronaPost(p[0])
+            ## just for testing
+            post.tag_date = datetime_today
+            # pprint(post.content_clean)
+            ## datetime
+            post.retrieve_time_tags()
+            self.assertTrue(post.retrieve_time_interval(), 'not found interval tag time')
+            # print(post.tag_time, 'vs' , p[1])
+            self.assertEqual(post.tag_time, p[1], 'not correct time from')
+            self.assertEqual(post.tag_time_to, p[2], 'not correct time to')
         return

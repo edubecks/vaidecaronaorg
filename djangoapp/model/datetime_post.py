@@ -91,7 +91,7 @@ class DateTimePost(Post):
                 day = int(match.group(1))
                 month = int(match.group(2))
                 # print(regex_expression, day, month)
-                self.tag_date = datetime.date(2013, month, day)
+                self.tag_date = datetime.datetime(2013, month, day)
                 return True
 
 

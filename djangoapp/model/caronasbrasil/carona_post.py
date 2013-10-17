@@ -14,7 +14,7 @@ class CaronaPost(DateTimePost):
         self.fb_id = None
         self.tag_ofereco_procuro = ''
         self.tag_time = None
-        self.tag_time_until = None
+        self.tag_time_to = None
         self.tag_origin = ''
         self.tag_destiny = ''
         self.tag_date = ''
@@ -31,11 +31,11 @@ class CaronaPost(DateTimePost):
 
         ## creating regex
         regex_cities_pattern = [
-            r'\s*-{0,3}>\s*',
+            r'\s*-{0,3}>{1,3}\s*',
             r'\s*-{1,3}\s*',
             r'\s*para\s*',
-            r'\s*\={0,3}>\s*',
-            r'\s*\>{0,3}\s*',
+            r'\s*\={0,3}>{1,3}\s*',
+            r'\s*>{1,3}\s*',
             r'\s* x \s*',
             u'\s*\u300B\s*',
             u'\s*\u27EB\s*',
@@ -125,16 +125,16 @@ class CaronaPost(DateTimePost):
                 # print(regex_expression, hour, minutes)
                 self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(hour, minutes))
                 ## default time interval
-                self.tag_time_until = datetime.datetime.combine(self.tag_date,
+                self.tag_time_to = datetime.datetime.combine(self.tag_date,
                                                                 datetime.time(23, 59))
                 return True
 
         ## until time
-        regex_after_time = [
-            r'(?:ate) as (\d{1,2})\s*(hrs|horas|h |hs)',
-            r'(?:ate) as (\d{1,2})\s*(am|pm|a\.m|p\.m)',
+        regex_to_time = [
+            r'(?:ate)\s*(?:as)?\s*(\d{1,2})\s*(hrs|horas|h |hs)',
+            r'(?:ate)\s*(?:as)?\s*(\d{1,2})\s*(am|pm|a\.m|p\.m)',
         ]
-        for regex_expression in regex_after_time:
+        for regex_expression in regex_to_time:
             regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
             match = regex.search(self.content_clean)
             # print(self.content_clean)
@@ -146,8 +146,26 @@ class CaronaPost(DateTimePost):
                 # print(regex_expression, hour, minutes)
                 self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(0, 0))
                 ## default time interval
-                self.tag_time_until = datetime.datetime.combine(self.tag_date,
+                self.tag_time_to = datetime.datetime.combine(self.tag_date,
                                                                 datetime.time(hour, minutes))
+                return True
+
+        ## interval
+        ## begin/end
+        regex_interval_time = [
+            r'(\d{1,2})\s*(?:hrs|horas|h|hs)/(\d{1,2})\s*(?:hrs|horas|h|hs)',
+        ]
+        for regex_expression in regex_interval_time:
+            regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
+            match = regex.search(self.content_clean)
+            # print(self.content_clean)
+            if match:
+                hour_begin = int(match.group(1))
+                hour_end = int(match.group(2))
+                # print(regex_expression, hour, minutes)
+                self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(hour_begin, 0))
+                ## default time interval
+                self.tag_time_to = datetime.datetime.combine(self.tag_date, datetime.time(hour_end, 0))
                 return True
 
         ## any time
@@ -159,13 +177,15 @@ class CaronaPost(DateTimePost):
             if t in self.content_clean:
                 ## default time interval
                 self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(0, 0))
-                self.tag_time_until = datetime.datetime.combine(self.tag_date,
+                self.tag_time_to = datetime.datetime.combine(self.tag_date,
                                                                 datetime.time(23, 59))
                 return True
 
+        print(self.content_clean)
+        print(self.tag_time)
         ## default
         if self.tag_time:
-            self.tag_time_until =  self.tag_time + datetime.timedelta(hours= 1)
+            self.tag_time_to =  self.tag_time + datetime.timedelta(hours= 1)
 
         return False
 
@@ -173,7 +193,7 @@ class CaronaPost(DateTimePost):
     def retrieve_ofereco_procuro_tag(self):
 
         ## procurar
-        procurar_tags = ['procur', 'busc']
+        procurar_tags = ['procur', 'busc', 'pode me dar uma carona', 'da carona', 'alguem indo']
         for t in procurar_tags:
             if t in self.content_clean:
                 self.tag_ofereco_procuro = 'procurar'
@@ -248,17 +268,17 @@ class CaronaPost(DateTimePost):
                 day = int(match.group(1))
                 month = i+1
                 # print(regex_expression, day, month)
-                self.tag_date = datetime.date(2013, month, day)
+                self.tag_date = datetime.datetime(2013, month, day)
                 return True
 
         regex_named_dates = [
-            r'(seg|2da|2a)(?:unda)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
-            r'(ter|3ca|3a)(?:ca)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
-            r'(qua|4ta|4a)(?:rta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-            r'(qui|5ta|5a)(?:nta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-            r'(sex|6ta|6a)(?:ta)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
-            r'(sab)(?:ado)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-            r'(dom)(?:ingo)?\s*?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
+            r'(seg|2da|2a)(?:unda)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
+            r'(ter|3ca|3a)(?:ca)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
+            r'(qua|4ta|4a)(?:rta)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(qui|5ta|5a)(?:nta)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(sex|6ta|6a)(?:ta)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
+            r'(sab)(?:ado)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(dom)(?:ingo)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
         ]
 
         for day, regex_expression in enumerate(regex_named_dates):
@@ -268,13 +288,14 @@ class CaronaPost(DateTimePost):
             # print self.content_clean
             # print regex_expression
             if match:
-                # print match.groups(), match.lastindex
+                # print match.groups(), match.lastindex, day
                 d = self.creation_date
                 max_days = 6
                 while d.weekday() != day and max_days: ## day: number of day, monday=0
                     d += datetime.timedelta(1)
                     max_days-=1
                 self.tag_date = d
+
                 # print self.tag_date
                 # day = int(match.group(1))
                 # month = i + 1
