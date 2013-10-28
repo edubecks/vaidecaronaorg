@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load url from future %}
+{% load jsonify %}
+{% load get_item from dict_operations %}
+<html>
+<head>
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <!-- Bootstrap -->
+    <!-- External lib-->
+    <script src="/static/lib/jquery.min.js"></script>
+    <script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+
+        function toTitleCase(str) {
+            return str.replace(/\w\S*/g, function (txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        }
+
+        var caronasCitiesAndStates = {{ caronas|jsonify }};
+        $(document).ready(function () {
+
+            // change of state
+            $('select[name="from-city-list"]').change(function () {
+                var fromState = $('select[name="from-state-list"]').val();
+                var fromCity = $('select[name="from-city-list"]').val();
+                var cities_list= "";
+                console.log("[DEBUG] ", fromState, fromCity, caronasCitiesAndStates[fromState]);
+                $.each(caronasCitiesAndStates[fromState], function (i, value) {
+                    if (value["to"] == fromCity) {
+                        cities_list += ("<option value=\""+value["from"]+"\">"+ toTitleCase(value["from"])+"</option>");
+                    }
+                });
+                console.log("[DEBUG] ", cities_list);
+                $('select[name="to-city-list"]').html(cities_list)
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+
+<h1>Hello, world! {{title}}</h1>
+<!-- from -->
+<select id="from-state-list" name="from-state-list">
+{% for car in caronas %}
+    <option value={{car}}>{{car}}</option>
+{% endfor %}
+</select>
+<select id="from-city-list" name="from-city-list">
+{% for city in caronas|get_item:from_state %}
+    <option value="{{city.from}}">{{city.from|title}}</option>
+{% endfor %}
+</select>
+<br>
+<!-- to -->
+<select id="to-state-list" name="to-state-list">
+{% for car in caronas %}
+    <option value={{car}}>{{car}}</option>
+{% endfor %}
+</select>
+<select id="to-city-list" name="to-city-list">
+{% for city in caronas|get_item:"SP" %}
+    {% if city.to == from_city%}
+        <option value={{city}}>{{city.to|title}}</option>
+    {% endif %}
+{% endfor %}
+</select>
+
+
+
+
+</body>
+</html>
