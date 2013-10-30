@@ -146,6 +146,7 @@ class CaronaPostTestCase(TestCase):
     def test_origin_destiny(self):
 
         example_posts = [
+            {'message': u'''carona sao carlos / sao paulo'''},
             {'message': u'''São Paulo -->> São Carlos',  go Por v 2  vagas'''},
             {'message': u'''São Paulo -> São Carlos',  go Por v 2  vagas'''},
             {'message': u'''São Paulo > São Carlos' ,   Por vol 2  vagas'''},
@@ -163,9 +164,15 @@ class CaronaPostTestCase(TestCase):
 
         for p  in example_posts:
             post = CaronaPost(p)
+            post.city1 = 'sao paulo'
+            post.city1_state = 'SP'
+            post.city2 = 'sao carlos'
+            post.city2_state = 'SP'
             post.city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
             post.city2_list = [u'Sao Carlos',u'Sanca', u'Samca', u'SC']
             self.assertTrue(post.retrieve_origin_destiny(), 'found origin and destiny')
+            print(post.content_clean)
+            print(post.tag_origin, ' --> ', post.tag_destiny)
         return
 
 

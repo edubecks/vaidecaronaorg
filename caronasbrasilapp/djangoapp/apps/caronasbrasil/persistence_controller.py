@@ -13,6 +13,7 @@ class PersistenceController(object):
         new_carona = CaronaModel(
             fb_post_id=carona_post.fb_post_id,
             fb_group_id=carona_post.fb_group_id,
+            fb_content = carona_post.content,
             origin=carona_post.tag_origin,
             destiny=carona_post.tag_destiny,
             date=carona_post.tag_datetime,

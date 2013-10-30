@@ -39,6 +39,7 @@ class CaronaPost(DateTimePost):
             r'\s*para\s*',
             r'\s*\={0,3}\s*>{1,3}\s*',
             r'\s*>{1,3}\s*',
+            r'\s*/{1,3}\s*',
             r'\s* x \s*',
             u'\s*\u300B\s*',
             u'\s*\u27EB\s*',

@@ -32,9 +32,20 @@ def search(request, op, from_city, to_city, date, from_time, to_time):
     to_city_index = to_city.rfind('-')
     to_city, to_city_state = to_city[:to_city_index], to_city[to_city_index+1:]
 
+    ## TODO
+    ## restrictions
+    if len(to_city_state)!=2 or len(from_city_state) != 2:
+        return
+    ## to_time > from_time
+    ## date > today
+
+
+
     ## preprocessing
     from_city = from_city.replace('-', ' ').lower()
     to_city = to_city.replace('-', ' ').lower()
+    from_city_state = from_city_state.upper()
+    to_city_state = to_city_state.upper()
     ofereco_procuro = op[0]
     ## Ex: '2013-10-15 18:00'
     from_datetime = datetime.strptime(date+from_time, "%Y-%m-%d%H:%M")
