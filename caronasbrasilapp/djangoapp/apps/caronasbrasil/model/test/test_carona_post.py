@@ -102,6 +102,9 @@ class CaronaPostTestCase(TestCase):
         datetime_today = datetime.datetime.now()
 
         example_posts = [
+            [{'message': u'''segunda-feira de manhã (horário a combinar - posso a partir das 8h30)'''},  datetime.datetime.combine(datetime_today, datetime.time(8, 30))],
+            [{'message': u'''pela manha'''},  datetime.datetime.combine(datetime_today, datetime.time(6, 0))],
+            [{'message': u'''por volta das 18:30 19:00hrs'''},  datetime.datetime.combine(datetime_today, datetime.time(18, 30))],
             [{'message': u'''por volta das 14 '''},  datetime.datetime.combine(datetime_today, datetime.time(14, 0))],
             [{'message': u'''sao carlos hoje, 27/10, as 21h. '''},  datetime.datetime.combine(datetime_today, datetime.time(21, 0))],
             [{'message': u'''ate as 8 da manha'''},  datetime.datetime.combine(datetime_today, datetime.time(6, 0))],

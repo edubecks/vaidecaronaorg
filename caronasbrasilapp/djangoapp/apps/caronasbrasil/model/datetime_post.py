@@ -52,12 +52,12 @@ class DateTimePost(Post):
 
         ## 24h
         regex_24h_time = [
+            r'(\d{2})(:\d{2})',
             r'(\d{1,2})(:\d{2})?\s*?(?:hrs|horas|h |hs|h\.)',
             # r'(\d{2})h\s',
             # r'(\d{2})\s*horas',
             # r'(\d{2})\s*hrs',
             r'(\d{1,2})(h\d{2})',
-            r'(\d{2})(:\d{2})',
             ## por volta das 14
             r'\s+as\s*(\d{2})',
             r'por\s*volta\s*das\s*(\d{2})',

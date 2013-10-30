@@ -91,10 +91,12 @@ class CaronaPost(DateTimePost):
 
         ## after time
         regex_after_time = [
-            r'(?:depois|a partir) das (\d{1,2})\s*(hrs|horas|h |hs)',
-            r'(?:depois|a partir) das (\d{1,2})\s*(am|pm|a\.m|p\.m)',
-            r'(?:depois|a partir) das (\d{1,2})()', ## () for simplicity in group capturing
-            r'(?:apos) as (\d{1,2})()', ## () for simplicity in group capturing
+            r'(?:depois|a partir) das (\d{1,2})()(?:[h|:])(\d{2})', ## () for simplicity in group capturing
+            r'(?:depois|a partir) das (\d{1,2})\s*(hrs|horas|h |hs)()',
+            r'(?:depois|a partir) das (\d{1,2})\s*(am|pm|a\.m|p\.m)()',
+            r'(?:depois|a partir) das (\d{1,2})()()', ## () for simplicity in group capturing
+            r'(?:apos) as (\d{1,2})()(?:[h|:])(\d{2})', ## () for simplicity in group capturing
+            r'(?:apos) as (\d{1,2})()()', ## () for simplicity in group capturing
         ]
         for regex_expression in regex_after_time:
             regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
@@ -104,7 +106,7 @@ class CaronaPost(DateTimePost):
                 ampm = match.group(2)
                 hour = int(match.group(1))
                 hour = hour + 12 if ampm == 'pm' or ampm == 'p.m' else hour
-                minutes = 0
+                minutes = int(match.group(3)) if match.group(3) else 0
                 # print(regex_expression, hour, minutes)
                 self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(hour, minutes))
                 ## default time interval
@@ -164,7 +166,6 @@ class CaronaPost(DateTimePost):
                 self.tag_time_to = datetime.datetime.combine(self.tag_date, CARONA_END_DATETIME)
                 return True
 
-
         ## looking for time
         super(CaronaPost, self).retrieve_time_tags()
 
@@ -195,7 +196,7 @@ class CaronaPost(DateTimePost):
         ## todo
         ## de manha, a noite, a tarde
         ## de manha
-        manha_identifiers = ['de manha', 'da manha']
+        manha_identifiers = ['de manha', 'da manha', 'pela manha']
         for t in manha_identifiers:
             if t in self.content_clean:
                 self.tag_time = datetime.datetime.combine(self.tag_date, CARONA_START_DATETIME)
