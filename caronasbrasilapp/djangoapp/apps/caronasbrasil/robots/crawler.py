@@ -19,7 +19,8 @@ class Crawler(object):
 
         ## persistence
         persistence = PersistenceController()
-        city1_list, city2_list = persistence.get_city1_city2_for_fb_group_id(fb_group_id)
+        city1, city1_state, city1_list, city2, city2_state, city2_list = \
+            persistence.get_cities_fb_group_id(fb_group_id)
 
         ## getting feed
         fb_manager = FBGroupsController(fb_group_id)
@@ -36,6 +37,11 @@ class Crawler(object):
                 pprint(carona_post.content_clean)
 
                 ## setting origin and destiny
+                carona_post.city1 = city1
+                carona_post.city1_state = city1_state
+                carona_post.city2 = city2
+                carona_post.city2_state = city2_state
+                
                 carona_post.city1_list = city1_list
                 carona_post.city2_list = city2_list
 
@@ -45,7 +51,7 @@ class Crawler(object):
                     self.log_not_parsed_post(carona_post)
                     break
                 carona_post.retrieve_time_tags()
-                has_time_interval = carona_post.retrieve_time_interval()
+                # has_time_interval = carona_post.retrieve_time_interval()
                 has_time_tag = True if carona_post.tag_time else False
 
                 ## origin_destiny

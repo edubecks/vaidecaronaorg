@@ -18,5 +18,8 @@ class MainController(object):
         for carona_group in carona_groups:
             print('crawling '+carona_group.fb_group_id)
             crawler.retrieve_posts(carona_group.fb_group_id)
+        return
+    
+    def search_carona(self, from_city, from_city_state, to_city, to_city_state, from_time, to_time):
 
         return

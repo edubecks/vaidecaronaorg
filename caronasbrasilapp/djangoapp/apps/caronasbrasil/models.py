@@ -4,8 +4,9 @@ from django.db import models
 class CaronaModel(models.Model):
     fb_post_id = models.CharField(max_length=40)
     fb_group_id = models.CharField(max_length=20)
-    origin = models.CharField(max_length=30)
-    destiny = models.CharField(max_length=30)
+    ## Ex: "sao carlos/SP"
+    origin = models.CharField(max_length=33)
+    destiny = models.CharField(max_length=33)
     date = models.DateTimeField(auto_now=False)
     ofereco_procuro = models.CharField(max_length=1) ## o: ofereco, p: procuro
     num_vagas = models.PositiveSmallIntegerField()

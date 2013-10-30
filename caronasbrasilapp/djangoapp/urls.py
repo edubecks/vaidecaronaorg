@@ -16,7 +16,9 @@ urlpatterns = patterns('',
     url('', include('social.apps.django_app.urls', namespace='social')),
 
     ## caronas brasil
-    url(r'^(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})/$', search),
+    # procurar/[-\w]+/[-\w]+/[-\d]+/[-\d:]+/[-\d:]+
+    url(r'^(?P<op>procurar)/(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<date>[-\d]+)/(?P<from_time>[-\d:]+)/(?P<to_time>[-\d:]+)/$', search),
+    url(r'^(?P<op>oferecer)/(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<date>[-\d]+)/(?P<from_time>[-\d:]+)/(?P<to_time>[-\d:]+)/$', search),
 
 
     # Uncomment the admin/doc line below to enable admin documentation:

@@ -1,5 +1,6 @@
 # coding: utf-8
-from djangoapp.apps.caronasbrasil.models import CaronaGroupModel
+from djangoapp.apps.caronasbrasil.main_controller import MainController
+from djangoapp.apps.caronasbrasil.models import CaronaGroupModel, CaronaModel
 
 __author__ = 'edubecks'
 
@@ -22,15 +23,8 @@ class Command(BaseCommand):
     # )
 
     def handle(self, *args, **options):
-        fb_group_id = '641749869191341'
-        city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
-        city2_list = [u'Sao Carlos', u'Sanca', u'Samca', u'SC']
-
-        ## saving model
-        CaronaGroupModel(
-            fb_group_id = fb_group_id,
-            city1 = ','.join(city1_list),
-            city2 = ','.join(city2_list)
-        ).save()
+        ## crawl
+        CaronaModel.objects.all().delete()
+        MainController().crawl_post()
         return
 

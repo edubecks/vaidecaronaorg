@@ -73,26 +73,28 @@ class CaronaPostTestCase(TestCase):
     def test_vagas(self):
 
         example_posts = [
-            {'message': u'''Por volta do 10 am Saindo do metro consolação. 1  vaga'''},
-            {'message': u'''r volta do 10 p.m. Saindo do metro consolação. uma  lugar'''},
-            {'message': u'''r volta do 10 pm. Saindo do metro consolação. 1pessoa'''},
-            {'message': u'''volta do 15:10 hrs Saindo do metro consolação. duas vagas'''},
-            {'message': u'''r volta do 7 am Saindo do metro consolação. Carro com 2 pessoas'''},
-            {'message': u'''r volta do 7 pm Saindo do metro consolação. Sobram 2 lugares'''},
-            {'message': u'''r volta das 10 da manha Saindo do metro consolação.3 pessoas'''},
-            {'message': u'''r volta das 3 da tarde Saindo do metro consolação. três lugares'''},
-            {'message': u'''r volta das 3 da tarde Saindo do metro consolação. tres vagas'''},
-            {'message': u'''r volta das 3 da tarde Saindo do metro consolação. quatro lugares'''},
-            {'message': u'''r volta das 3 da tarde Saindo do metro consolação. 4 lugares'''},
-            {'message': u'''r volta das 3 da tarde Saindo do metro consolação. 4vagas'''},
+            [{'message': u'''ofereco carona sp ---sc segunda 28/10 as 19, saindo da barra funda. em sao carlos eu deixo em casa. 2 vagas 30 conto. 11 960761033'''},2],
+            [{'message': u'''Por volta do 10 am Saindo do metro consolação. 1  vaga'''},              1],
+            [{'message': u'''r volta do 10 p.m. Saindo do metro consolação. uma  lugar'''},           1],
+            [{'message': u'''r volta do 10 pm. Saindo do metro consolação. 1pessoa'''},               1],
+            [{'message': u'''volta do 15:10 hrs Saindo do metro consolação. duas vagas'''},           2],
+            [{'message': u'''r volta do 7 am Saindo do metro consolação. Carro com 2 pessoas'''},     2],
+            [{'message': u'''r volta do 7 pm Saindo do metro consolação. Sobram 2 lugares'''},        2],
+            [{'message': u'''r volta das 10 da manha Saindo do metro consolação.3 pessoas'''},        3],
+            [{'message': u'''r volta das 3 da tarde Saindo do metro consolação. três lugares'''},     3],
+            [{'message': u'''r volta das 3 da tarde Saindo do metro consolação. tres vagas'''},       3],
+            [{'message': u'''r volta das 3 da tarde Saindo do metro consolação. quatro lugares'''},   4],
+            [{'message': u'''r volta das 3 da tarde Saindo do metro consolação. 4 lugares'''},        4],
+            [{'message': u'''r volta das 3 da tarde Saindo do metro consolação. 4vagas'''},           4]
         ]
 
 
         for p in example_posts:
-            post = CaronaPost(p)
-            self.assertTrue(post.retrieve_vagas(), "found number of vagas tag")
-            # pprint(post.content_clean)
-            # pprint(post.tag_num_vagas)
+            post = CaronaPost(p[0])
+            self.assertTrue(post.retrieve_vagas(), 'found number of vagas tag')
+            pprint(post.content_clean)
+            pprint(str(p[1])+' vs '+ str(post.tag_num_vagas))
+            self.assertEqual(post.tag_num_vagas, p[1], 'correct number of vagas\n****' +post.content_clean)
         return
 
     def test_time(self):
@@ -102,7 +104,7 @@ class CaronaPostTestCase(TestCase):
         example_posts = [
             [{'message': u'''por volta das 14 '''},  datetime.datetime.combine(datetime_today, datetime.time(14, 0))],
             [{'message': u'''sao carlos hoje, 27/10, as 21h. '''},  datetime.datetime.combine(datetime_today, datetime.time(21, 0))],
-            [{'message': u'''ate as 8 da manha'''},  datetime.datetime.combine(datetime_today, datetime.time(8, 0))],
+            [{'message': u'''ate as 8 da manha'''},  datetime.datetime.combine(datetime_today, datetime.time(6, 0))],
             [{'message': u'''saindo as 20h.'''},  datetime.datetime.combine(datetime_today, datetime.time(20, 0))],
             [{'message': u'''de preferencia no periodo da manha.'''},  datetime.datetime.combine(datetime_today, datetime.time(6, 0))],
             [{'message': u'''sanca segunda-feira de manha'''},  datetime.datetime.combine(datetime_today, datetime.time(6, 0))],
@@ -137,7 +139,7 @@ class CaronaPostTestCase(TestCase):
             post.tag_date = datetime_today
             pprint(post.content_clean)
             self.assertTrue(post.retrieve_time_tags(), 'found tag time')
-            print(post.tag_time, 'vs' , p[1])
+            print(str(post.tag_time), 'vs' , str(p[1]))
             self.assertEqual(post.tag_time, p[1], 'correct time')
         return
 
@@ -169,6 +171,7 @@ class CaronaPostTestCase(TestCase):
 
     def test_date_tags(self):
         example_posts = [
+            [{'message': u''' sao paulo hoje, dia 27 '''},                             datetime.datetime(2013, 10, 27)],
             [{'message': u''' 4a feira'''},                             datetime.datetime(2013, 10, 2)],
             [{'message': u''' terça-feira,'''},                          datetime.datetime(2013, 10, 8)],
             [{'message': u''' quarta-feira,'''},                          datetime.datetime(2013, 10, 2)],
@@ -195,8 +198,8 @@ class CaronaPostTestCase(TestCase):
             post = CaronaPost(p[0])
             post.creation_date = datetime.datetime(2013, 10, 2)
             self.assertTrue(post.retrieve_date_tags(), 'retrieve date tags')
-            # print(post.content_clean)
-            # print(post.tag_date)
+            print(post.content_clean)
+            print(post.tag_date)
             self.assertEquals(post.tag_date, p[1], 'retrieve correct tag date')
         return
 
@@ -220,13 +223,13 @@ class CaronaPostTestCase(TestCase):
             },
             {
                 'post': {
-                    'message':"""Procuro carona! Quinta-Feira, dia 10/10.
+                    'message':u"""Procuro carona! Quinta-Feira, dia 10/10.
 São Paulo -> São Carlos
 Depois do almoço !"""},
-                 'datetime':datetime.datetime(2013,10,10,11,30),
+                 'datetime':datetime.datetime(2013,10,10,12,0),
                  'ofereco_procuro': 'procurar',
-                 'origin': 'sao carlos',
-                 'destiny': 'sao paulo'
+                 'origin': 'sao paulo',
+                 'destiny': 'sao carlos'
             },
         ]
 
@@ -241,14 +244,18 @@ Depois do almoço !"""},
             post.city1_list = cities[0]
             post.city2_list = cities[1]
             ## datetime
-            self.assertTrue(post.retrieve_time_tags(), 'retrieve time tags')
+            print post.content_clean
             self.assertTrue(post.retrieve_date_tags(), 'retrieve date tags')
+            print post.tag_date
+            self.assertTrue(post.retrieve_time_tags(), 'retrieve time tags ' + str(post.tag_time))
             print post.tag_time, post.tag_date
+            print post.tag_datetime, p['datetime']
             self.assertEquals(post.tag_datetime, p['datetime'], 'retrieve date tags')
             ## vagas
-            self.assertTrue(post.retrieve_vagas(), 'retrieve vagas')
-            print post.tag_num_vagas
-            self.assertEquals(post.tag_num_vagas, p['vagas'], 'retrieve date tags')
+            if 'vagas' in p:
+                self.assertTrue(post.retrieve_vagas(), 'retrieve vagas')
+                print post.tag_num_vagas
+                self.assertEquals(post.tag_num_vagas, p['vagas'], 'retrieve date tags')
             ## ofereco / procuro
             self.assertTrue(post.retrieve_ofereco_procuro_tag(), 'ofereco/procuro vagas')
             print post.tag_ofereco_procuro
@@ -256,6 +263,8 @@ Depois do almoço !"""},
             ## origin / destiny
             self.assertTrue(post.retrieve_origin_destiny(), 'origin/destiny vagas')
             print post.tag_origin, '-->', post.tag_destiny
+            print post.tag_origin, p['origin']
+            print post.tag_destiny, p['destiny']
             self.assertEquals(post.tag_origin, p['origin'], 'origin tags')
             self.assertEquals(post.tag_destiny, p['destiny'], 'destiny tags')
 
@@ -266,17 +275,17 @@ Depois do almoço !"""},
         example_posts = [
             [
                 {'message': u'''terça (01/10) a qualquer hora.'''},
-                datetime.datetime.combine(datetime_today, datetime.time(0, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(6, 0)),
                 datetime.datetime.combine(datetime_today, datetime.time(23, 59))
             ],
             [
                 {'message': u'''terça (01/10) a qualquer horario.'''},
-                datetime.datetime.combine(datetime_today, datetime.time(0, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(6, 0)),
                 datetime.datetime.combine(datetime_today, datetime.time(23, 59))
             ],
             [
                 {'message': u'''saindo até 12hrs.'''},
-                datetime.datetime.combine(datetime_today, datetime.time(0, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(6, 0)),
                 datetime.datetime.combine(datetime_today, datetime.time(12, 0))
             ],
             [
@@ -296,7 +305,7 @@ Depois do almoço !"""},
             ],
             [
                 {'message': u''''dia 26 de outubro eu queria ... pode me dar uma carona --> qualquer hora'''},
-                datetime.datetime.combine(datetime_today, datetime.time(0, 0)),
+                datetime.datetime.combine(datetime_today, datetime.time(6, 0)),
                 datetime.datetime.combine(datetime_today, datetime.time(23, 59 ))
             ],
         ]
@@ -308,8 +317,8 @@ Depois do almoço !"""},
             # pprint(post.content_clean)
             ## datetime
             post.retrieve_time_tags()
-            self.assertTrue(post.retrieve_time_interval(), 'not found interval tag time')
-            # print(post.tag_time, 'vs' , p[1])
-            self.assertEqual(post.tag_time, p[1], 'not correct time from')
+            self.assertTrue(post.retrieve_time_tags(), 'not found interval tag time')
+            print(post.tag_time, 'vs' , p[1])
+            self.assertEqual(post.tag_time, p[1], 'not correct time from '+ p[0]['message'])
             self.assertEqual(post.tag_time_to, p[2], 'not correct time to')
         return

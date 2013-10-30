@@ -24,6 +24,9 @@
         var caronasCitiesAndStates = {{ caronas|jsonify }};
         $(document).ready(function () {
 
+            // setting default values
+            // $('input[name="date"]'  ).val(new Date().toJSON().slice(0, 10));
+
             // change of state
             $('select[name="from-city-list"]').change(function () {
                 var fromState = $('select[name="from-state-list"]').val();
@@ -39,38 +42,75 @@
                 $('select[name="to-city-list"]').html(cities_list)
             });
 
+            $('input[name="search-carona-button"]').click(function(event) {
+
+                event.preventDefault();
+
+                //TODO: verify values
+                var fromState = $('select[name="from-state-list"]').val();
+                var fromCity = $('select[name="from-city-list"]').val();
+                var toState = $('select[name="to-state-list"]').val();
+                var toCity = $('select[name="to-city-list"]').val();
+                var fromTime = $('input[name="from-time"]').val();
+                var toTime = $('input[name="to-time"]').val();
+                var caronaDate = $('input[name="date"]').val();
+
+                fromCity = fromCity.replace(" ","-");
+                toCity = toCity.replace(" ","-");
+                
+                var url = "/procurar/"+fromCity+"-"+fromState+"/"+toCity+"-"+toState+"/"+caronaDate+"/"+
+                        fromTime+"/"+toTime;
+                $.get(url);
+
+
+
+            })
 
         });
     </script>
 </head>
 <body>
 
-<h1>Hello, world! {{title}}</h1>
-<!-- from -->
-<select id="from-state-list" name="from-state-list">
-{% for car in caronas %}
-    <option value={{car}}>{{car}}</option>
-{% endfor %}
-</select>
-<select id="from-city-list" name="from-city-list">
-{% for city in caronas|get_item:from_state %}
-    <option value="{{city.from}}">{{city.from|title}}</option>
-{% endfor %}
-</select>
-<br>
-<!-- to -->
-<select id="to-state-list" name="to-state-list">
-{% for car in caronas %}
-    <option value={{car}}>{{car}}</option>
-{% endfor %}
-</select>
-<select id="to-city-list" name="to-city-list">
-{% for city in caronas|get_item:"SP" %}
-    {% if city.to == from_city%}
-        <option value={{city}}>{{city.to|title}}</option>
-    {% endif %}
-{% endfor %}
-</select>
+
+<form action="">
+    <input type="date" required name="date" value="2013-10-28"/>
+    <label>
+        From:
+        <input name="from-time" type="time" min="06:00" max="23:59" required value="08:00"/>
+    </label>
+    <label>
+        Until:
+        <input name="to-time" type="time" min="06:00" max="23:59" required value="20:00"/>
+    </label>
+    <!-- from -->
+    <select id="from-state-list" name="from-state-list">
+        {% for car in caronas %}
+        <option value="{{car}}">{{car}}</option>
+        {% endfor %}
+    </select>
+    <select id="from-city-list" name="from-city-list">
+        {% for city in caronas|get_item:from_state %}
+        <option value="{{city.from}}">{{city.from|title}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <!-- to -->
+    <select id="to-state-list" name="to-state-list" >
+        {% for car in caronas %}
+        <option value="{{car}}">{{car}}</option>
+        {% endfor %}
+    </select>
+    <select id="to-city-list" name="to-city-list">
+        {% for city in caronas|get_item:"SP" %}
+        {% if city.to == from_city%}
+        <option value="{{city.to}}">{{city.to|title}}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+
+    <input type="submit" name="search-carona-button"/>
+</form>
+
 
 
 

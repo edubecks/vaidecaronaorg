@@ -12,6 +12,7 @@ class PersistenceController(object):
     def add_carona(self, carona_post):
         new_carona = CaronaModel(
             fb_post_id=carona_post.fb_post_id,
+            fb_group_id=carona_post.fb_group_id,
             origin=carona_post.tag_origin,
             destiny=carona_post.tag_destiny,
             date=carona_post.tag_datetime,
@@ -28,11 +29,14 @@ class PersistenceController(object):
         return CaronaModel.objects.filter(
             origin=origin, destiny=destiny, date__range=[begin_datetime, end_datetime])
 
-    def get_city1_city2_for_fb_group_id(self, fb_group_id):
+    def get_cities_fb_group_id(self, fb_group_id):
         carona_group = CaronaGroupModel.objects.get(fb_group_id=fb_group_id)
         city1_list = carona_group.city1_list.split(',')
         city2_list = carona_group.city2_list.split(',')
-        return city1_list, city2_list
+        return (
+            carona_group.city1, carona_group.city1_state, city1_list,
+            carona_group.city2, carona_group.city2_state, city2_list
+        )
 
     def add_parser_error(self, fb_group_id, fb_post_id, message_content):
         return ParserErrorsModel(
@@ -65,3 +69,13 @@ class PersistenceController(object):
             })
 
         return paths
+
+    def search_carona(self, ofereco_procuro, from_city, from_city_state, to_city, to_city_state,
+                      from_datetime, to_datetime):
+        return CaronaModel.objects.filter(
+            origin=from_city+'/'+from_city_state,
+            destiny =to_city + '/' + to_city_state,
+            date__range = (from_datetime, to_datetime),
+            ofereco_procuro = ofereco_procuro,
+            num_vagas = 1
+        )

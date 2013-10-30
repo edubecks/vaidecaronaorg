@@ -1,3 +1,5 @@
+from datetime import datetime
+from pprint import pprint
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, render, redirect
 from django.http import *
@@ -6,6 +8,7 @@ from django.template import RequestContext
 from social.backends.facebook import FacebookAppOAuth2
 from unidecode import unidecode
 from django.conf import settings
+from djangoapp.apps.caronasbrasil.main_controller import MainController
 from djangoapp.apps.caronasbrasil.persistence_controller import PersistenceController
 
 
@@ -21,16 +24,43 @@ def index(request):
         RequestContext(request)
     )
 
-def search(request, from_city, to_city, year, month, day ):
+def search(request, op, from_city, to_city, date, from_time, to_time):
 
     ##todo validar parametros
     from_city_index = from_city.rfind('-')
     from_city, from_city_state = from_city[:from_city_index], from_city[from_city_index+1:]
     to_city_index = to_city.rfind('-')
     to_city, to_city_state = to_city[:to_city_index], to_city[to_city_index+1:]
-    year = int(year)
-    month = int(month)
-    day = int(day)
+
+    ## preprocessing
+    from_city = from_city.replace('-', ' ').lower()
+    to_city = to_city.replace('-', ' ').lower()
+    ofereco_procuro = op[0]
+    ## Ex: '2013-10-15 18:00'
+    from_datetime = datetime.strptime(date+from_time, "%Y-%m-%d%H:%M")
+    to_datetime = datetime.strptime(date+to_time, "%Y-%m-%d%H:%M")
+
+    pprint({
+        'ofereco_procuro': ofereco_procuro,
+        'from_city': from_city,
+        'from_city_state': from_city_state,
+        'to_city': to_city,
+        'to_city_state': to_city_state,
+        'from_datetime': from_datetime,
+        'to_datetime': to_datetime,
+    })
+
+    results  = PersistenceController().search_carona(**{
+        'ofereco_procuro': ofereco_procuro,
+        'from_city' : from_city,
+        'from_city_state' : from_city_state,
+        'to_city' : to_city,
+        'to_city_state' : to_city_state,
+        'from_datetime': from_datetime,
+        'to_datetime': to_datetime,
+    })
+
+    pprint(results.values())
 
 
     return render_to_response(
