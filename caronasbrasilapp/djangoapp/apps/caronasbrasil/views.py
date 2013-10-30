@@ -46,20 +46,11 @@ def search(request, op, from_city, to_city, date, from_time, to_time):
     to_city = to_city.replace('-', ' ').lower()
     from_city_state = from_city_state.upper()
     to_city_state = to_city_state.upper()
-    ofereco_procuro = op[0]
+    ofereco_procuro = 'o' if op[0] == 'p' else 'p'
     ## Ex: '2013-10-15 18:00'
     from_datetime = datetime.strptime(date+from_time, "%Y-%m-%d%H:%M")
     to_datetime = datetime.strptime(date+to_time, "%Y-%m-%d%H:%M")
 
-    pprint({
-        'ofereco_procuro': ofereco_procuro,
-        'from_city': from_city,
-        'from_city_state': from_city_state,
-        'to_city': to_city,
-        'to_city_state': to_city_state,
-        'from_datetime': from_datetime,
-        'to_datetime': to_datetime,
-    })
 
     results  = PersistenceController().search_carona(**{
         'ofereco_procuro': ofereco_procuro,
@@ -75,12 +66,10 @@ def search(request, op, from_city, to_city, date, from_time, to_time):
 
 
     return render_to_response(
-        'base.html',
+        'results.html',
         {
             'title': 'Caronas brasil',
-            'caronas': PersistenceController().get_carona_paths(),
-            'from_city': 'sao carlos',
-            'from_state': 'SP',
+            'results': results,
         },
         RequestContext(request)
     )
