@@ -19,6 +19,9 @@ class Post(object):
         self.content = self._info['message']
         self.content_clean = unidecode.unidecode(self._info['message']).lower().replace('\n', ' ')
 
+        ## post creator
+        self.fb_user_id = self._info['from']['id']
+
         ##post info
         if 'id' in self._info:
             self.fb_group_id, self.fb_post_id = self._info['id'][:self._info['id'].index('_')], self._info['id']

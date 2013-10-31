@@ -5,6 +5,7 @@ class CaronaModel(models.Model):
     fb_post_id = models.CharField(max_length=40)
     fb_group_id = models.CharField(max_length=20)
     fb_content = models.CharField(max_length=1000)
+    fb_user_id = models.CharField(max_length=20)
     ## Ex: "sao carlos/SP"
     origin = models.CharField(max_length=33)
     destiny = models.CharField(max_length=33)
@@ -12,6 +13,13 @@ class CaronaModel(models.Model):
     to_datetime = models.DateTimeField(auto_now=False)
     ofereco_procuro = models.CharField(max_length=1) ## o: ofereco, p: procuro
     num_vagas = models.PositiveSmallIntegerField()
+
+    def get_absolute_url(self):
+        return 'https://www.facebook.com/groups/'+self.fb_group_id+'/permalink/'+\
+               self.fb_post_id[self.fb_post_id.index('_')+1:]+'/'
+
+    def get_contact_user(self):
+        return 'https://www.facebook.com/messages/'+self.fb_user_id
 
 
 class CaronaGroupModel(models.Model):

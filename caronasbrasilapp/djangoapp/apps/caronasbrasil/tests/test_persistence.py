@@ -50,8 +50,8 @@ class TestCase(TestCase):
                 ofereco_procuro 		=c[4],
                 num_vagas 			    =c[5],
                 fb_content 			    =c[6],
-                from_datetime 			= datetime.datetime.strptime(c[7], "%Y-%m-%d %H:%M:%S"),
-                to_datetime 			= datetime.datetime.strptime(c[8], "%Y-%m-%d %H:%M:%S"),
+                from_datetime 			= datetime.datetime.strptime(c[7], '%Y-%m-%d %H:%M:%S'),
+                to_datetime 			= datetime.datetime.strptime(c[8], '%Y-%m-%d %H:%M:%S'),
             )
         return
 
