@@ -12,7 +12,8 @@ class Crawler(object):
         return
 
     def log_not_parsed_post(self,carona_post):
-        PersistenceController().add_parser_error(carona_post.fb_group_id, carona_post.fb_post_id, carona_post.content_clean)
+        PersistenceController().add_parser_error(carona_post.fb_group_id,
+                                                 carona_post.fb_post_id, carona_post.content_clean)
         return
 
     def retrieve_posts(self, fb_group_id):
@@ -28,8 +29,10 @@ class Crawler(object):
 
         for fb_post in feed:
 
-            ## check if exists
-            if not persistence.exists_post(fb_post['id']):
+            ## check if the post is not commented
+            if (fb_post['message'][:2]!= '//'
+            ## check if it is already parsed
+                and not persistence.exists_post(fb_post['id'])):
 
                 # pprint(fb_post)
                 ## create new carona post

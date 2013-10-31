@@ -158,6 +158,8 @@ class CaronaPost(DateTimePost):
         interval_time_indentifiers = [
             'qualquer hora',
             'qualquer horario',
+            'qq horario',
+            'qqer horario',
         ]
         for t in interval_time_indentifiers:
             if t in self.content_clean:
@@ -240,7 +242,7 @@ class CaronaPost(DateTimePost):
                 return True
 
         ## oferecer
-        oferecer_tags = ['oferec']
+        oferecer_tags = ['oferec','deixo na', 'pego na']
         for t in oferecer_tags:
             if t in self.content_clean:
                 self.tag_ofereco_procuro = 'oferecer'
