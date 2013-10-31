@@ -31,29 +31,14 @@ class TestCase(TestCase):
         
         
         caronas = [
-        ['641749869191341_663694143663580','641749869191341','Sao Carlos/SP','Sao Paulo/SP','2013-10-27 20:00:00','o',1],
-        ['641749869191341_663694103663584','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-28 06:00:00','p',1],
-        ['641749869191341_663694086996919','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-28 15:00:00','o',1],
-        ['641749869191341_663694080330253','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-11-03 18:00:00','o',1],
-        ['641749869191341_663694070330254','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-29 12:00:00','p',1],
-        ['641749869191341_663694053663589','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-28 10:00:00','o',1],
-        ['641749869191341_663694026996925','641749869191341','Sao Carlos/SP','Sao Paulo/SP','2013-10-28 13:00:00','o',1],
-        ['641749869191341_663693993663595','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-27 21:00:00','o',1],
-        ['641749869191341_663667053666289','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-28 18:00:00','p',1],
-        ['641749869191341_663667020332959','641749869191341','Sao Carlos/SP','Sao Paulo/SP','2013-11-01 15:00:00','p',1],
-        ['641749869191341_663666973666297','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-29 18:00:00','p',1],
-        ['641749869191341_663666950332966','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-29 09:00:00','o',1],
-        ['641749869191341_663666923666302','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-28 19:00:00','o',2],
-        ['641749869191341_663666900332971','641749869191341','Sao Carlos/SP','Sao Paulo/SP','2013-10-28 14:00:00','p',2],
-        ['641749869191341_663666870332974','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-28 08:00:00','o',1],
-        ['641749869191341_659260847440243','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-20 20:00:00','p',1],
-        ['641749869191341_659260817440246','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-15 06:00:00','p',1],
-        ['641749869191341_659260787440249','641749869191341','Sao Carlos/SP','Sao Paulo/SP','2013-10-15 15:30:00','o',1],
-        ['641749869191341_659260767440251','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-15 08:00:00','o',1],
-        ['641749869191341_656572881042373','641749869191341','Sao Carlos/SP','Sao Paulo/SP','2013-10-15 22:00:00','p',1],
-        ['641749869191341_656572837709044','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-15 10:30:00','o',1],
-        ['641749869191341_656572817709046','641749869191341','Sao Carlos/SP','Sao Paulo/SP','2013-10-15 00:00:00','p',1],
-        ['641749869191341_656572744375720','641749869191341','Sao Paulo/SP','Sao Carlos/SP','2013-10-15 18:00:00','p',1],
+            ['641749869191341_663694103663584','641749869191341','sao paulo/SP','sao carlos/SP','p',1,'PROCURO São Paulo -> São Carlos Amanhã (segunda), 28 de outubro. De manhã (até às 8 da manha).','2013-10-28 06:00:00','2013-10-28 08:00:00'],
+            ['641749869191341_663666870332974','641749869191341','sao paulo/SP','sao carlos/SP','o',1,'OFEREÇO Osasco/São Paulo --> Sanca segunda-feira de manhã (horário a combinar - posso a partir das 10h30) Pego na Ponte do Piqueri, estação de trem Lapa ou Osasco Contato por inbox ou 11 97575 5098','2013-10-28 08:30:00','2013-10-28 23:59:00'],
+            ['641749869191341_664807603552234','641749869191341','sao paulo/SP','sao carlos/SP','o',1,'Ofereço carona SP - SANCA, segunda(28/10), às 10h saindo da Barra Funda. 169 8838 5971(oi).','2013-10-28 10:00:00','2013-10-28 11:00:00'],
+            ['641749869191341_663694026996925','641749869191341','sao carlos/SP','sao paulo/SP','o',1,'Ofereço carona de São Carlos PARA São Paulo amanhã, segunda-feira às 13h. Pego na rodoviária e em SP deixo no metrô Ana Rosa. R$ 30,00 Tratar pelo cel 011 991290479','2013-10-28 13:00:00','2013-10-28 14:00:00'],
+            ['641749869191341_663666900332971','641749869191341','sao carlos/SP','sao paulo/SP','p',2,'Procuro Carona Sanca-> Sampa dia 28/10 por volta das 14 Preciso de 2 vagas. Obrigada','2013-10-28 14:00:00','2013-10-28 15:00:00'],
+            ['641749869191341_663694086996919','641749869191341','sao paulo/SP','sao carlos/SP','o',1,'Ofereço carona Sampa --> Sanca, segunda-feira (28/10) ás 15 hrs. Pego na rodoviária tiete. Contato inbox ou sms (11) 98723-2189. Vlw!!','2013-10-28 15:00:00','2013-10-28 16:00:00'],
+            ['641749869191341_663667053666289','641749869191341','sao paulo/SP','sao carlos/SP','p',1,'Procuro São Paulo --> São Carlos 28/10 a noite!','2013-10-28 18:00:00','2013-10-28 23:59:00'],
+            ['641749869191341_663666923666302','641749869191341','sao paulo/SP','sao carlos/SP','o',2,'Ofereço carona SP ---SC segunda 28/10 as 19, saindo da barra funda. em sao carlos eu deixo em casa. 2 vagas 30 conto. 11 960761033','2013-10-28 19:00:00','2013-10-28 20:00:00']
         ]
 
         for c in caronas:
@@ -62,9 +47,11 @@ class TestCase(TestCase):
                 fb_group_id 			=c[1],
                 origin 			        =c[2],
                 destiny 			    =c[3],
-                date 			        = datetime.datetime.strptime(c[4], "%Y-%m-%d %H:%M:%S"),
-                ofereco_procuro 		=c[5],
-                num_vagas 			    =c[6],
+                ofereco_procuro 		=c[4],
+                num_vagas 			    =c[5],
+                fb_content 			    =c[6],
+                from_datetime 			= datetime.datetime.strptime(c[7], "%Y-%m-%d %H:%M:%S"),
+                to_datetime 			= datetime.datetime.strptime(c[8], "%Y-%m-%d %H:%M:%S"),
             )
         return
 
@@ -75,8 +62,21 @@ class TestCase(TestCase):
         return
 
     def test_search(self):
+
         results = PersistenceController().search_carona('o', 'sao paulo','SP' ,'sao carlos', 'SP',
-                                              datetime.datetime(2013, 10, 15, 8, 0, 0),
-                                              datetime.datetime(2013, 10, 15, 12, 0, 0))
+                                              datetime.datetime(2013, 10, 28, 11, 0, 0),
+                                              datetime.datetime(2013, 10, 28, 11, 30, 0))
+        pprint(results.values())
+        results = PersistenceController().search_carona('o', 'sao paulo','SP' ,'sao carlos', 'SP',
+                                              datetime.datetime(2013, 10, 28, 9, 0, 0),
+                                              datetime.datetime(2013, 10, 28, 13, 0, 0))
+        pprint(results.values())
+        results = PersistenceController().search_carona('o', 'sao paulo','SP' ,'sao carlos', 'SP',
+                                              datetime.datetime(2013, 10, 28, 8, 0, 0),
+                                              datetime.datetime(2013, 10, 28, 11, 0, 0))
+        pprint(results.values())
+        results = PersistenceController().search_carona('o', 'sao paulo','SP' ,'sao carlos', 'SP',
+                                              datetime.datetime(2013, 10, 28, 11, 0, 0),
+                                              datetime.datetime(2013, 10, 28, 16, 0, 0))
         pprint(results.values())
         return

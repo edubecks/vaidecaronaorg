@@ -1,6 +1,7 @@
 # coding: utf-8
 from pprint import pprint
 from djangoapp.apps.caronasbrasil.models import CaronaModel, CaronaGroupModel, ParserErrorsModel
+from django.db.models import Q
 
 __author__ = 'edubecks'
 
@@ -16,7 +17,8 @@ class PersistenceController(object):
             fb_content = carona_post.content,
             origin=carona_post.tag_origin,
             destiny=carona_post.tag_destiny,
-            date=carona_post.tag_datetime,
+            from_datetime=carona_post.tag_time,
+            to_datetime=carona_post.tag_time_to,
             ofereco_procuro=carona_post.tag_ofereco_procuro[0], ## o: ofereco, p: procuro
             num_vagas=carona_post.tag_num_vagas
         ).save()
@@ -26,11 +28,7 @@ class PersistenceController(object):
         return CaronaModel.objects.filter(fb_post_id=fb_post_id).count() > 0
 
 
-    def search(self, origin, destiny, begin_datetime, end_datetime):
-        return CaronaModel.objects.filter(
-            origin=origin, destiny=destiny, date__range=[begin_datetime, end_datetime])
-
-    def get_cities_fb_group_id(self, fb_group_id):
+    def get_cities_by_fb_group_id(self, fb_group_id):
         carona_group = CaronaGroupModel.objects.get(fb_group_id=fb_group_id)
         city1_list = carona_group.city1_list.split(',')
         city2_list = carona_group.city2_list.split(',')
@@ -76,7 +74,16 @@ class PersistenceController(object):
         return CaronaModel.objects.filter(
             origin=from_city+'/'+from_city_state,
             destiny =to_city + '/' + to_city_state,
-            date__range = (from_datetime, to_datetime),
             ofereco_procuro = ofereco_procuro,
             num_vagas = 1
+        ).filter(
+            ## Example: in DB 10-12
+            ## case: 10-12 vs 9-13 searching superset
+            Q(from_datetime__gte=from_datetime, to_datetime__lte=to_datetime) |
+            ## case: 10-12 vs 11-13
+            Q(to_datetime__gte=from_datetime, to_datetime__lte=to_datetime) |
+            ## case: 10-12 vs 9-11
+            Q(from_datetime__gte=from_datetime, from_datetime__lte=to_datetime) |
+            ## case: 10-12 vs 10:30-11 searching subset
+            Q(from_datetime__lte=from_datetime, to_datetime__gte=to_datetime)
         )

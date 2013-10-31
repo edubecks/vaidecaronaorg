@@ -20,7 +20,7 @@ class Crawler(object):
         ## persistence
         persistence = PersistenceController()
         city1, city1_state, city1_list, city2, city2_state, city2_list = \
-            persistence.get_cities_fb_group_id(fb_group_id)
+            persistence.get_cities_by_fb_group_id(fb_group_id)
 
         ## getting feed
         fb_manager = FBGroupsController(fb_group_id)
