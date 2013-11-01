@@ -1,5 +1,5 @@
 # coding: utf-8
-from fb_groups.fb_groups_controller import FBGroupsController
+from djangoapp.apps.caronasbrasil.model.fb_groups.fb_groups_controller import FBGroupsController
 
 __author__ = 'edubecks'
 
@@ -18,5 +18,19 @@ class FBGroupsControllerTestCase(TestCase):
 
         fbgroups_controller = FBGroupsController(group_id)
         posts  = fbgroups_controller.get_posts()
+        pprint(posts)
+        return
+
+    def test_get_posts_with_pagination(self):
+        group_id = '641749869191341'
+        fbgroups_controller = FBGroupsController(group_id)
+
+        ## last 24 hours
+        posts = fbgroups_controller.get_posts(last_time_checked=1440)
+        pprint(posts)
+
+        ## all time posts
+        print('\n\n\n\n\n\n-------------------------------------------------------------')
+        posts = fbgroups_controller.get_posts(last_time_checked=10080)
         pprint(posts)
         return

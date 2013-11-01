@@ -8,7 +8,9 @@ __author__ = 'edubecks'
 
 class Crawler(object):
 
-    def __init__(self):
+    ## default time_interval 1 week = 60min * 24h *7d
+    def __init__(self, time_interval=10080):
+        self.time_interval = time_interval
         return
 
     def log_not_parsed_post(self,carona_post):
@@ -25,7 +27,7 @@ class Crawler(object):
 
         ## getting feed
         fb_manager = FBGroupsController(fb_group_id)
-        feed = fb_manager.get_posts()
+        feed = fb_manager.get_posts(last_time_checked=self.time_interval)
 
         for fb_post in feed:
 

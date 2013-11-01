@@ -1,4 +1,6 @@
 # coding: utf-8
+import datetime
+import time
 import os
 import facebook
 
@@ -23,5 +25,10 @@ class FBGroupsController(object):
             self.generate_token()
         return facebook.GraphAPI(self.fb_token)
 
-    def get_posts(self):
-        return self.facebook_graph.get_connections(self.fb_group_id, 'feed')['data']
+    def get_posts(self, last_time_checked=0):
+        if not last_time_checked:
+            return self.facebook_graph.get_connections(self.fb_group_id, 'feed')['data']
+        else:
+            last_time_checked = datetime.timedelta(minutes=last_time_checked)
+            since = int(time.mktime((datetime.datetime.now() - last_time_checked).timetuple()))
+            return self.facebook_graph.get_connections(self.fb_group_id, 'feed', since=since)['data']
