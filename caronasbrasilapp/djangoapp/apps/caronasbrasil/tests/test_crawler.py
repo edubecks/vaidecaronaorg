@@ -30,9 +30,9 @@ class TestCrawler(TestCase):
     def test_crawler(self):
         fb_group_id = '641749869191341'
 
-        crawler = Crawler()
+        crawler = Crawler(time_interval=30)
         crawler.retrieve_posts(fb_group_id)
 
         ## test log
-        self.assertEquals(ParserErrorsModel.objects.all().count(), 2)
+        self.assertEquals(ParserErrorsModel.objects.all().count(), 0)
         return

@@ -370,7 +370,8 @@ class CaronaPost(DateTimePost):
                 return True
 
         ## nothing found
-        return False
+        self.tag_date = self.creation_date
+        return True
 
     def __str__(self):
         return str({

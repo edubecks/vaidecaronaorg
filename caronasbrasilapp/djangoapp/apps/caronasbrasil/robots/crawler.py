@@ -52,9 +52,6 @@ class Crawler(object):
 
                  ## date / time
                 has_date_tag = carona_post.retrieve_date_tags()
-                if not has_date_tag:
-                    self.log_not_parsed_post(carona_post)
-                    break
                 carona_post.retrieve_time_tags()
                 # has_time_interval = carona_post.retrieve_time_interval()
                 has_time_tag = True if carona_post.tag_time else False
