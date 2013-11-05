@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from djangoapp.apps.caronasbrasil.views import index, done, search, carona_info
+from djangoapp.apps.caronasbrasil.views import index, search, carona_info
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'^$', index),
 
     ## facebook login
-    url(r'^done/$', done),
+    # url(r'^done/$', done),
     url('', include('social.apps.django_app.urls', namespace='social')),
 
     ## caronas brasil
