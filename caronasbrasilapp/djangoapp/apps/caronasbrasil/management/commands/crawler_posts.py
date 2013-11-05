@@ -1,16 +1,11 @@
 # coding: utf-8
 __author__ = 'edubecks'
-
-# coding: utf-8
+from djangoapp.apps.caronasbrasil.main_controller import MainController
 from optparse import make_option
-
-__author__ = 'edubecks'
-
 from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'clean older logs'
 
     # option_list = BaseCommand.option_list + (
     #     make_option('-r',
@@ -22,5 +17,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         ## execute robot
+        MainController().crawl_post()
         return
 
