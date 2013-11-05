@@ -148,7 +148,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'djangoapp.apps.caronasbrasil',
     'south',
-    'social.apps.django_app.default',
+    # 'social.apps.django_app.default',
     ## production
     'gunicorn',
 )
