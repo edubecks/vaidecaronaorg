@@ -184,55 +184,56 @@ LOGGING = {
     }
 }
 
-## facebook login
-## social auth
-## http://psa.matiasaguirre.net/docs/backends/facebook.html#oauth2
-SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('CARONAS_BRASIL_FB_APP_ID')
-SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('CARONAS_BRASIL_FB_APP_SECRET')
-
-
-AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookOAuth2',
-    # 'social.apps.django_app.utils.BackendWrapper',
-)
-
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.contrib.messages.context_processors.messages',
-    'social.apps.django_app.context_processors.backends',
-)
-
-
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/done/'
-URL_PATH = ''
-SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
-SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
-SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
-    'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/userinfo.profile'
-]
-# SOCIAL_AUTH_EMAIL_FORM_URL = '/signup-email'
-SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
-SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'example.app.mail.send_validation'
-SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/email-sent/'
-# SOCIAL_AUTH_USERNAME_FORM_URL = '/signup-username'
-SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
-
-SOCIAL_AUTH_PIPELINE = (
-    # 'social.pipeline.social_auth.social_details',
-    # 'social.pipeline.social_auth.social_uid',
-    # 'social.pipeline.social_auth.auth_allowed',
-    # 'social.pipeline.social_auth.social_user',
-    # 'social.pipeline.user.get_username',
-    # 'example.app.pipeline.require_email',
-    # 'social.pipeline.mail.mail_validation',
-    # 'social.pipeline.user.create_user',
-    # 'social.pipeline.social_auth.associate_user',
-    # 'social.pipeline.social_auth.load_extra_data',
-    # 'social.pipeline.user.user_details'
-)
+#
+# ## facebook login
+# ## social auth
+# ## http://psa.matiasaguirre.net/docs/backends/facebook.html#oauth2
+# SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('CARONAS_BRASIL_FB_APP_ID')
+# SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('CARONAS_BRASIL_FB_APP_SECRET')
+#
+#
+# AUTHENTICATION_BACKENDS = (
+#     'social.backends.facebook.FacebookOAuth2',
+#     # 'social.apps.django_app.utils.BackendWrapper',
+# )
+#
+#
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     'django.contrib.auth.context_processors.auth',
+#     'django.core.context_processors.debug',
+#     'django.core.context_processors.i18n',
+#     'django.core.context_processors.media',
+#     'django.contrib.messages.context_processors.messages',
+#     'social.apps.django_app.context_processors.backends',
+# )
+#
+#
+# LOGIN_URL = '/login/'
+# LOGIN_REDIRECT_URL = '/done/'
+# URL_PATH = ''
+# SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
+# SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
+# SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
+#     'https://www.googleapis.com/auth/drive',
+#     'https://www.googleapis.com/auth/userinfo.profile'
+# ]
+# # SOCIAL_AUTH_EMAIL_FORM_URL = '/signup-email'
+# SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
+# SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'example.app.mail.send_validation'
+# SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/email-sent/'
+# # SOCIAL_AUTH_USERNAME_FORM_URL = '/signup-username'
+# SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
+#
+# SOCIAL_AUTH_PIPELINE = (
+#     # 'social.pipeline.social_auth.social_details',
+#     # 'social.pipeline.social_auth.social_uid',
+#     # 'social.pipeline.social_auth.auth_allowed',
+#     # 'social.pipeline.social_auth.social_user',
+#     # 'social.pipeline.user.get_username',
+#     # 'example.app.pipeline.require_email',
+#     # 'social.pipeline.mail.mail_validation',
+#     # 'social.pipeline.user.create_user',
+#     # 'social.pipeline.social_auth.associate_user',
+#     # 'social.pipeline.social_auth.load_extra_data',
+#     # 'social.pipeline.user.user_details'
+# )
