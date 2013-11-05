@@ -13,7 +13,7 @@ urlpatterns = patterns('',
 
     ## facebook login
     # url(r'^done/$', done),
-    url('', include('social.apps.django_app.urls', namespace='social')),
+    # url('', include('social.apps.django_app.urls', namespace='social')),
 
     ## caronas brasil
     # procurar/[-\w]+/[-\w]+/[-\d]+/[-\d:]+/[-\d:]+
