@@ -34,3 +34,12 @@ class FBGroupsControllerTestCase(TestCase):
         posts = fbgroups_controller.get_posts(last_time_checked=10080)
         pprint(posts)
         return
+
+    def test_get_comments(self):
+        group_id = '641749869191341'
+        fbgroups_controller = FBGroupsController(group_id)
+
+        comments = fbgroups_controller.get_comments('641749869191341_666135846752743')
+        pprint(comments)
+
+        return

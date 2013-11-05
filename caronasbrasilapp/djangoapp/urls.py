@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from djangoapp.apps.caronasbrasil.views import index, done, search
+from djangoapp.apps.caronasbrasil.views import index, done, search, carona_info
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -19,6 +19,9 @@ urlpatterns = patterns('',
     # procurar/[-\w]+/[-\w]+/[-\d]+/[-\d:]+/[-\d:]+
     url(r'^(?P<op>procurar)/(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<date>[-\d]+)/(?P<from_time>[-\d:]+)/(?P<to_time>[-\d:]+)/$', search),
     url(r'^(?P<op>oferecer)/(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<date>[-\d]+)/(?P<from_time>[-\d:]+)/(?P<to_time>[-\d:]+)/$', search),
+
+    ## info caronas
+    url(r'caronas/(?P<carona_id>.*)', carona_info ),
 
 
     # Uncomment the admin/doc line below to enable admin documentation:

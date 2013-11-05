@@ -88,3 +88,6 @@ class PersistenceController(object):
             ## case: 10-12 vs 10:30-11 searching subset
             Q(from_datetime__lte=from_datetime, to_datetime__gte=to_datetime)
         )
+
+    def get_carona_info(self, carona_id):
+        return CaronaModel.objects.get(id=carona_id)

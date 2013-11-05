@@ -21,6 +21,9 @@ class CaronaModel(models.Model):
     def get_contact_user(self):
         return 'https://www.facebook.com/messages/'+self.fb_user_id
 
+    def get_more_info(self):
+        return '/caronas/'+str(self.id)
+
 
 class CaronaGroupModel(models.Model):
     fb_group_id = models.CharField(max_length=20)

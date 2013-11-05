@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+{{carona.id}}
+Desde {{carona.origin}} para {{carona.destiny}}<br>
+No dia {{carona.from_datetime|date:'d/m/Y'}}
+Entre as {{carona.from_datetime|date:'H:i'}} e as {{carona.to_datetime|date:'H:i'}}<br>
+<br>
+{% for comment in carona.comments %}
+    {{comment.message}}
+    <br>
+{% endfor %}
+
+<a href="{{carona.get_absolute_url}}">FB</a>
+
+<a href="{{carona.get_contact_user}}">Facebook inbox</a>
+
+
+
+</body>
+</html>

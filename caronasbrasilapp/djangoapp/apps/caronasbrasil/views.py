@@ -9,6 +9,7 @@ from social.backends.facebook import FacebookAppOAuth2
 from unidecode import unidecode
 from django.conf import settings
 from djangoapp.apps.caronasbrasil.main_controller import MainController
+from djangoapp.apps.caronasbrasil.model.fb_groups.fb_groups_controller import FBGroupsController
 from djangoapp.apps.caronasbrasil.persistence_controller import PersistenceController
 
 
@@ -20,6 +21,19 @@ def index(request):
             'caronas': PersistenceController().get_carona_paths(),
             'from_city': 'sao carlos',
             'from_state': 'SP',
+        },
+        RequestContext(request)
+    )
+
+def carona_info(request, carona_id):
+    carona = PersistenceController().get_carona_info(carona_id)
+    comments = FBGroupsController(carona.fb_group_id).get_comments(carona.fb_post_id)
+    carona.comments =  comments
+    return render_to_response(
+        'carona_info.html',
+        {
+            'title': 'Caronas brasil',
+            'carona': carona,
         },
         RequestContext(request)
     )
