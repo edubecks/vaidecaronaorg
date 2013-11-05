@@ -1,3 +1,5 @@
 -r common.txt
 newrelic==2.0.0.1
 MySQL-python==1.2.4
+dj-database-url==0.2.2
+gunicorn==18.0

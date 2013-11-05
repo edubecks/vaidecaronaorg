@@ -6,10 +6,12 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Your Name', 'your_email@example.com'),
+    ('Eduardo Gonzalo Espinoza Carreon', 'edubecks007@gmail.com'),
 )
 
 MANAGERS = ADMINS
+
+DATABASES  = {}
 
 ## local dev
 if (
@@ -17,19 +19,15 @@ if (
     ):
     DEBUG =  True
 
-## database
-DB_NAME =       os.getenv('CARONAS_BRASIL_DB_NAME')
-DB_USER =       os.getenv('CARONAS_BRASIL_DB_USER')
-DB_PASSWORD =   os.getenv('CARONAS_BRASIL_DB_PASSWORD')
-DB_HOST =       os.getenv('CARONAS_BRASIL_DB_HOST')
-DB_PORT =       os.getenv('CARONAS_BRASIL_DB_PORT')
-DB_ENGINE =       os.getenv('CARONAS_BRASIL_DB_ENGINE')
-print DB_NAME, DB_USER, DB_ENGINE
+    ## database
+    DB_NAME =       os.getenv('CARONAS_BRASIL_DB_NAME')
+    DB_USER =       os.getenv('CARONAS_BRASIL_DB_USER')
+    DB_PASSWORD =   os.getenv('CARONAS_BRASIL_DB_PASSWORD')
+    DB_HOST =       os.getenv('CARONAS_BRASIL_DB_HOST')
+    DB_PORT =       os.getenv('CARONAS_BRASIL_DB_PORT')
+    DB_ENGINE =     os.getenv('CARONAS_BRASIL_DB_ENGINE')
 
-if DEBUG:
-
-    DATABASES = {
-        'default': {
+    DATABASES['default'] =  {
             'ENGINE': DB_ENGINE, # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
             'NAME': DB_NAME,                      # Or path to database file if using sqlite3.
             # The following settings are not used with sqlite3:
@@ -38,7 +36,10 @@ if DEBUG:
             'HOST': DB_HOST,                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
             'PORT': DB_PORT,                      # Set to empty string for default.
         }
-    }
+
+else:
+    import dj_database_url
+    DATABASES['default'] = dj_database_url.config()
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -106,7 +107,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '&@l^*qjmqb9xq=mup@07%1_@08$ntcjm0jb_iqb5!+)6$2au4='
+SECRET_KEY = os.getenv('CARONAS_BRASIL_DJANGO_SECRET_KEY')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
