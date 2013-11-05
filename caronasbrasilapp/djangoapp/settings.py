@@ -149,6 +149,8 @@ INSTALLED_APPS = (
     'djangoapp.apps.caronasbrasil',
     'south',
     'social.apps.django_app.default',
+    ## production
+    'gunicorn',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

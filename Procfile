@@ -1,1 +1,1 @@
-web: newrelic-admin run-program python caronasbrasilapp/manage.py run_gunicorn -b "0.0.0.0:$PORT" -w 10
+web: gunicorn --pythonpath caronasbrasilapp djangoapp.wsgi:application -b 0.0.0.0:$PORT
