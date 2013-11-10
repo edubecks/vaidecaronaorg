@@ -2,18 +2,11 @@
 __author__ = 'edubecks'
 from djangoapp.apps.caronasbrasil.main_controller import MainController
 from optparse import make_option
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, NoArgsCommand
 
 
-class Command(BaseCommand):
-
-    # option_list = BaseCommand.option_list + (
-    #     make_option('-r',
-    #                 '--range_hours',
-    #                 action='store',
-    #                 dest='range_hours',
-    #                 help='specify number of recent hours to crawl results in pending links'),
-    # )
+class Command(NoArgsCommand):
+    help = 'crawler of FB posts'
 
     def handle(self, *args, **options):
         ## execute robot

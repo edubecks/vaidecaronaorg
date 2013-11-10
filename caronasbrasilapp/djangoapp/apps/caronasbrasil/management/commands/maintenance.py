@@ -24,7 +24,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         ## crawl
-        CaronaModel.objects.all().delete()
-        MainController().crawl_post()
+        print 'hello world'
+        # CaronaModel.objects.all().delete()
+        # MainController().crawl_post()
         return
 

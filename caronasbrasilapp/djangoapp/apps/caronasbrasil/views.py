@@ -15,7 +15,20 @@ from djangoapp.apps.caronasbrasil.persistence_controller import PersistenceContr
 
 def index(request):
     return render_to_response(
-        'base.html',
+        'index.html',
+        {
+            'title': 'Caronas brasil',
+            'caronas': PersistenceController().get_carona_paths(),
+            'from_city': 'sao carlos',
+            'from_state': 'SP',
+        },
+        RequestContext(request)
+    )
+
+
+def last(request):
+    return render_to_response(
+        'index.html',
         {
             'title': 'Caronas brasil',
             'caronas': PersistenceController().get_carona_paths(),

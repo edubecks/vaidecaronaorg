@@ -31,6 +31,8 @@ class Crawler(object):
 
         for fb_post in feed:
 
+            pprint(feed)
+
             ## check if the post is not commented
             if (fb_post['message'][:2]!= '//'
             ## check if it is already parsed

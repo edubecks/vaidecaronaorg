@@ -15,6 +15,7 @@ class MainController(object):
         ## run crawler every 10 minutes
         crawler = Crawler(time_interval=10)
         carona_groups = CaronaGroupModel.objects.all()
+        pprint(carona_groups.values())
         for carona_group in carona_groups:
             crawler.retrieve_posts(carona_group.fb_group_id)
         return

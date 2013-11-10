@@ -6,124 +6,36 @@
 <head>
     <title>{{title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--G.Analytics-->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-45440947-1', 'caronasbrasil.com');
-      ga('send', 'pageview');
-    </script>
+    <!-- Analytics -->
+    <!-- {% include "analytics.html" %} -->
+    <!-- External lib-->
+    <!-- jquery -->
+    <script src="/static/lib/jquery.min.js"></script>
+    <!-- <script src="/static/lib/jquery.mobile.min.js"></script> -->
     <!-- Bootstrap -->
     <link href="/static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <!-- Bootstrap -->
-    <!-- External lib-->
-    <script src="/static/lib/jquery.min.js"></script>
+    <link href="/static/lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
     <script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Pickadate -->
+    <script src="/static/lib/pickadate/picker.js"></script>
+    <script src="/static/lib/pickadate/picker.date.js"></script>
+    <script src="/static/lib/pickadate/picker.time.js"></script>
+    <script src="/static/lib/pickadate/legacy.js"></script>
+    <link rel="stylesheet" href="/static/lib/pickadate/themes/default.css">
+    <link rel="stylesheet" href="/static/lib/pickadate/themes/default.date.css">
+    <link rel="stylesheet" href="/static/lib/pickadate/themes/default.time.css">
+    <link rel="stylesheet" href="/static/lib/pickadate/translations/pt_BR.js">
+    <link rel="stylesheet" href="/static/css/styles.css">
 
-    <script type="text/javascript">
-
-        function toTitleCase(str) {
-            return str.replace(/\w\S*/g, function (txt) {
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            });
-        }
-
-        var caronasCitiesAndStates = {{ caronas|jsonify }};
-        $(document).ready(function () {
-
-            // setting default values
-            // $('input[name="date"]'  ).val(new Date().toJSON().slice(0, 10));
-
-            // change of state
-            $('select[name="from-city-list"]').change(function () {
-                var fromState = $('select[name="from-state-list"]').val();
-                var fromCity = $('select[name="from-city-list"]').val();
-                var cities_list= "";
-                console.log("[DEBUG] ", fromState, fromCity, caronasCitiesAndStates[fromState]);
-                $.each(caronasCitiesAndStates[fromState], function (i, value) {
-                    if (value["to"] == fromCity) {
-                        cities_list += ("<option value=\""+value["from"]+"\">"+ toTitleCase(value["from"])+"</option>");
-                    }
-                });
-                console.log("[DEBUG] ", cities_list);
-                $('select[name="to-city-list"]').html(cities_list)
-            });
-
-            $('input[name="search-carona-button"]').click(function(event) {
-
-                event.preventDefault();
-
-                //TODO: verify values
-                var fromState = $('select[name="from-state-list"]').val();
-                var fromCity = $('select[name="from-city-list"]').val();
-                var toState = $('select[name="to-state-list"]').val();
-                var toCity = $('select[name="to-city-list"]').val();
-                var fromTime = $('input[name="from-time"]').val();
-                var toTime = $('input[name="to-time"]').val();
-                var caronaDate = $('input[name="date"]').val();
-
-                fromCity = fromCity.replace(" ","-");
-                toCity = toCity.replace(" ","-");
-                
-                var url = "/procurar/"+fromCity+"-"+fromState+"/"+toCity+"-"+toState+"/"+caronaDate+"/"+
-                        fromTime+"/"+toTime;
-                $.get(url);
-
-
-
-            })
-
-        });
-    </script>
+    {% block javascript %}
+    {% endblock javascript %}
+    {% block css %}
+    {% endblock css %}
 </head>
 <body>
-
-
-<form action="">
-    <input type="date" required name="date" value="2013-10-28"/>
-    <label>
-        From:
-        <input name="from-time" type="time" min="06:00" max="23:59" required value="08:00"/>
-    </label>
-    <label>
-        Until:
-        <input name="to-time" type="time" min="06:00" max="23:59" required value="20:00"/>
-    </label>
-    <!-- from -->
-    <select id="from-state-list" name="from-state-list">
-        {% for car in caronas %}
-        <option value="{{car}}">{{car}}</option>
-        {% endfor %}
-    </select>
-    <select id="from-city-list" name="from-city-list">
-        {% for city in caronas|get_item:from_state %}
-        <option value="{{city.from}}">{{city.from|title}}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <!-- to -->
-    <select id="to-state-list" name="to-state-list" >
-        {% for car in caronas %}
-        <option value="{{car}}">{{car}}</option>
-        {% endfor %}
-    </select>
-    <select id="to-city-list" name="to-city-list">
-        {% for city in caronas|get_item:"SP" %}
-        {% if city.to == from_city%}
-        <option value="{{city.to}}">{{city.to|title}}</option>
-        {% endif %}
-        {% endfor %}
-    </select>
-
-    <input type="submit" name="search-carona-button"/>
-</form>
-
-
-
-
+{% include "header.html" %}
+{% block content %}
+{% endblock content %}
 
 </body>
 </html>

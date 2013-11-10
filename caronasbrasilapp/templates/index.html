@@ -1,9 +1,178 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ Title }}</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load url from future %}
+{% load jsonify %}
+{% load get_item from dict_operations %}
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.datepicker').pickadate({
+                    monthsFull   : ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"],
+                    monthsShort  : ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"],
+                    weekdaysFull : ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"],
+                    weekdaysShort: ["dom", "seg", "ter", "qua", "qui", "sex", "sab"],
+                    today        : "hoje",
+                    clear        : "excluir",
+                    // format: "dddd, d !de mmmm !de yyyy",
+                    format       : "yyyy-mm-dd",
+                    formatSubmit : "yyyy-mm-dd"
+                }
+        );
 
-</body>
-</html>
+        $('.timepicker').pickatime({
+            clear       : "excluir",
+            format      : "HH:i",
+            formatSubmit: "HH:i",
+            min         : [6, 0],
+            max         : [23, 59]
+        });
+    });
+</script>
+<script type="text/javascript">
+
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    var caronasCitiesAndStates = {{caronas | jsonify}};
+    $(document).ready(function () {
+
+        // setting default values
+        $('input[name="date"]').val(new Date().toJSON().slice(0, 10));
+        $('input[name="from-time"]').val("6:00");
+        $('input[name="to-time"]').val("22:00");
+
+        // change of state
+        $('select[name="from-city-list"]').change(function () {
+            var fromState = $('select[name="from-state-list"]').val();
+            var fromCity = $('select[name="from-city-list"]').val();
+            var cities_list = "";
+            console.log("[DEBUG] ", fromState, fromCity, caronasCitiesAndStates[fromState]);
+            $.each(caronasCitiesAndStates[fromState], function (i, value) {
+                if (value["to"] == fromCity) {
+                    cities_list += ("<option value=\"" + value["from"] + "\">" + toTitleCase(value["from"]) + "</option>");
+                }
+            });
+            console.log("[DEBUG] ", cities_list);
+            $('select[name="to-city-list"]').html(cities_list)
+        });
+
+        $('input[name="search-carona-button"]').click(function (event) {
+
+            console.log("[DEBUG] ", "button here");
+
+            event.preventDefault();
+
+            //TODO: verify values
+            var fromState = $('select[name="from-state-list"]').val();
+            var fromCity = $('select[name="from-city-list"]').val();
+            var toState = $('select[name="to-state-list"]').val();
+            var toCity = $('select[name="to-city-list"]').val();
+            var fromTime = $('input[name="from-time"]').val();
+            var toTime = $('input[name="to-time"]').val();
+            var caronaDate = $('input[name="date"]').val();
+            var ofereceProcurar = $('input:radio[name="oferecer-procurar"]:checked').val();
+
+            fromCity = fromCity.replace(" ", "-");
+            toCity = toCity.replace(" ", "-");
+
+            var url = "/"+ofereceProcurar+"/" + fromCity + "-" + fromState + "/" + toCity + "-" + toState + "/" + caronaDate + "/" +
+                    fromTime + "/" + toTime;
+            window.location.href = url;
+
+        })
+
+    });
+</script>
+{% endblock javascript %}
+
+{% block content %}
+<div id="content">
+<div class="center">
+<form action="javascript:void(0);">
+
+
+    <div class="row" id="oferecer-procurar-row">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+        <label><input type="radio" name="oferecer-procurar" value="procurar" checked> Procuro</label>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+        <label><input type="radio" name="oferecer-procurar" value="oferecer"> Ofereço</label>
+        </div>
+    </div>
+    <div id="date-wrapper" class="row">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+        <label for="date">Data</label>
+        </div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
+        <input class="fieldset__input js__datepicker picker__input datepicker" type="text"
+               placeholder="Data"
+               readonly="" id="date" name="date">
+        </div>
+    </div>
+    <div id="from-time-wrapper" class="row">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+        <label for="from-time">Desde: </label>
+        </div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
+        <input id="" class="fieldset__input js__timepicker picker__input picker__input--active timepicker"
+               type="text"
+               placeholder="Desde as ... horas" readonly="" name="from-time"
+               id="from-time">
+        </div>
+    </div>
+    <div id="to-time-wrapper" class="row">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+        <label for="to-time">Até: </label>
+        </div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
+        <input id="" class="fieldset__input js__timepicker picker__input picker__input--active timepicker"
+               type="text"
+               placeholder="Até as ... horas" readonly="" name="to-time"
+               id="to-time">
+        </div>
+    </div>
+    <!-- from -->
+    <div class="row" id="from-city">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+            <label for="from-state-list">Desde:</label>
+        </div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
+            <select id="from-state-list" name="from-state-list">
+                {% for car in caronas %}
+                <option value="{{car}}">{{car}}</option>
+                {% endfor %}
+            </select>
+            <label for="from-city-list"></label><select id="from-city-list" name="from-city-list">
+                {% for city in caronas|get_item:from_state %}
+                <option value="{{city.from}}">{{city.from|title}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <!-- to -->
+    <div class="row" id="to-city">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+        <label for="to-state-list">Para:</label>
+        </div>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
+            <select id="to-state-list" name="to-state-list">
+            {% for car in caronas %}
+            <option value="{{car}}">{{car}}</option>
+            {% endfor %}
+            </select>
+            <label for="to-city-list"></label><select id="to-city-list" name="to-city-list">
+                {% for city in caronas|get_item:"SP" %}
+                {% if city.to == from_city%}
+                <option value="{{city.to}}">{{city.to|title}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <input type="submit" name="search-carona-button"/>
+</form>
+</div>
+</div>
+{% endblock content %}

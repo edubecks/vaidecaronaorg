@@ -1,0 +1,8 @@
+#content{
+    width:100%;
+}
+
+.center {
+    display : table;
+    margin  : 0 auto;
+}

@@ -12,12 +12,23 @@ class Command(BaseCommand):
 
         ## Test
         ## https://www.facebook.com/groups/641749869191341/
-        fb_group_id = '641749869191341'
+        # fb_group_id = '641749869191341'
+        # city1 = 'sao paulo'
+        # city1_state = 'SP'
+        # city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
+        # city2 = 'sao carlos'
+        # city2_state = 'SP'
+        # city2_list = [u'Sao Carlos', u'Sanca', u'Samca', u'SC']
+
+
+        ## Caronas sao carlos
+        ## https://www.facebook.com/groups/caronascsp/
+        fb_group_id = '144978565569620'
         city1 = 'sao paulo'
         city1_state = 'SP'
         city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
         city2 = 'sao carlos'
-        city2_state = 'SS'
+        city2_state = 'SP'
         city2_list = [u'Sao Carlos', u'Sanca', u'Samca', u'SC']
 
         ## saving model
