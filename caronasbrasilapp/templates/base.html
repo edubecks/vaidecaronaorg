@@ -33,9 +33,14 @@
     {% endblock css %}
 </head>
 <body>
+
+<div class="container">
 {% include "header.html" %}
+<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;"
+                                      alt="Fork me on GitHub"></a>
 {% block content %}
 {% endblock content %}
-
+{% include "footer.html" %}
+</div>
 </body>
 </html>

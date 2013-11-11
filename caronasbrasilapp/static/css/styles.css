@@ -1,8 +1,16 @@
 #content{
-    width:100%;
+    /*width:100%;*/
+}
+
+.container{
+    max-width: 800px;
 }
 
 .center {
     display : table;
     margin  : 0 auto;
+}
+
+.row{
+    margin-bottom: 5px;
 }
