@@ -35,7 +35,7 @@ class Crawler(object):
 
             ## check if the post is not commented
             if (fb_post['message'][:2]!= '//'
-            ## check if it is already parsed
+                ## check if it is already parsed
                 and not persistence.exists_post(fb_post['id'])):
 
                 # pprint(fb_post)

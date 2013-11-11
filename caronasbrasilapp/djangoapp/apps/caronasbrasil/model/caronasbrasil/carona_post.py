@@ -34,16 +34,23 @@ class CaronaPost(DateTimePost):
 
         ## creating regex
         regex_cities_pattern = [
-            r'\s*-{0,3}\s*>{1,3}\s*',
-            r'\s*-{1,3}\s*',
+            r'\s*-{0,10}\s*>{1,10}\s*',
+            r'\s*-{1,10}\s*',
             r'\s*para\s*',
-            r'\s*\={0,3}\s*>{1,3}\s*',
-            r'\s*>{1,3}\s*',
-            r'\s*/{1,3}\s*',
+            r'\s*pra\s*',
+            r'\s*\={0,10}\s*>{1,10}\s*',
+            r'\s*>{1,10}\s*',
+            r'\s*/{1,10}\s*',
             r'\s* x \s*',
+            r'\s* a \s*',
+            r'\s* ate \s*',
+            r'\s* ate: \s*',
             u'\s*\u300B\s*',
             u'\s*\u27EB\s*',
         ]
+
+        ## TODO-optimizar
+        ## crear las combinaciones en el momento y no antes
         regex_city1_city2 = []
         regex_city2_city1 = []
         for city1 in self.city1_list:
@@ -140,6 +147,7 @@ class CaronaPost(DateTimePost):
         ## begin/end
         regex_interval_time = [
             r'(\d{1,2})\s*(?:hrs|horas|h|hs)/(\d{1,2})\s*(?:hrs|horas|h|hs)',
+            r'entre (\d{1,2})\s*(?:hrs|horas|h|hs).*?e\s*(\d{1,2})\s*(?:hrs|horas|h|hs)'
         ]
         for regex_expression in regex_interval_time:
             regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
@@ -223,7 +231,7 @@ class CaronaPost(DateTimePost):
 
         ## default: anytime
         if self.tag_date:
-            self.tag_time = datetime.datetime.combine(self.tag_date, datetime.time(0, 0))
+            self.tag_time = datetime.datetime.combine(self.tag_date, CARONA_START_DATETIME)
             self.tag_time_to = datetime.datetime.combine(self.tag_date, CARONA_END_DATETIME)
             return True
 
@@ -235,14 +243,14 @@ class CaronaPost(DateTimePost):
     def retrieve_ofereco_procuro_tag(self):
 
         ## procurar
-        procurar_tags = ['procur', 'busc', 'pode me dar uma carona', 'da carona', 'alguem indo']
+        procurar_tags = ['procur', 'busc', 'pode me dar uma carona', 'da carona', 'alguem indo', 'preciso de carona']
         for t in procurar_tags:
             if t in self.content_clean:
                 self.tag_ofereco_procuro = 'procurar'
                 return True
 
         ## oferecer
-        oferecer_tags = ['oferec','deixo na', 'pego na']
+        oferecer_tags = ['oferec','deixo', 'pego na']
         for t in oferecer_tags:
             if t in self.content_clean:
                 self.tag_ofereco_procuro = 'oferecer'
@@ -314,13 +322,13 @@ class CaronaPost(DateTimePost):
                 return True
 
         regex_named_dates = [
-            r'(seg|2da|2a)(?:unda)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
-            r'(ter|3ca|3a)(?:ca)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
-            r'(qua|4ta|4a)(?:rta)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-            r'(qui|5ta|5a)(?:nta)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-            r'(sex|6ta|6a)(?:ta)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
-            r'(sab)(?:ado)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
-            r'(dom)(?:ingo)?(?:\s+|-)?(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
+            r'(seg|2da|2a)(?:unda)?(?:\s+|-)(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
+            r'(ter|3ca|3a)(?:ca)?(?:\s+|-)(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
+            r'(qua|4ta|4a)(?:rta)?(?:\s+|-)(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(qui|5ta|5a)(?:nta)?(?:\s+|-)(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(sex|6ta|6a)(?:ta)?(?:\s+|-)(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?'  ,
+            r'(sab)(?:ado)?(?:\s+|-)(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?' ,
+            r'(dom)(?:ingo)?(?:\s+|-)(?:feira)?,?\s*?(?:dia)?\s*?(\d{1,2})?',
         ]
 
         for day, regex_expression in enumerate(regex_named_dates):
@@ -328,9 +336,9 @@ class CaronaPost(DateTimePost):
             regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
             match = regex.search(self.content_clean)
             # print self.content_clean
-            # print regex_expression
+            print regex_expression
             if match:
-                # print match.groups(), match.lastindex, day
+                print match.groups(), match.lastindex, day
                 d = self.creation_date
                 max_days = 6
                 while d.weekday() != day and max_days: ## day: number of day, monday=0

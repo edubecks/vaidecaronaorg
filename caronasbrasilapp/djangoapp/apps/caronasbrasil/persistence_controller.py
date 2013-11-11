@@ -26,7 +26,8 @@ class PersistenceController(object):
         return new_carona
 
     def exists_post(self, fb_post_id):
-        return CaronaModel.objects.filter(fb_post_id=fb_post_id).count() > 0
+        return (CaronaModel.objects.filter(fb_post_id=fb_post_id).count() > 0
+                or ParserErrorsModel.objects.filter(fb_post_id=fb_post_id).count() > 0)
 
 
     def get_cities_by_fb_group_id(self, fb_group_id):

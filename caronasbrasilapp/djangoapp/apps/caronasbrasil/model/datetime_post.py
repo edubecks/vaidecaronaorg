@@ -87,6 +87,7 @@ class DateTimePost(Post):
         """
         regex_date = [
             r'(\d{1,2})\/(\d{1,2})',
+            r' (\d{1,2})\.(\d{1,2}) ',
         ]
         for regex_expression in regex_date:
             regex = re.compile(regex_expression)
