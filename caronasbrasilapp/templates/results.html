@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-{% for result in results %}
-    Desde {{result.origin}} para {{result.destiny}}<br>
-    No dia {{result.from_datetime|date:'d/m/Y'}}
-    Entre as {{result.from_datetime|date:'H:i'}} e as {{result.to_datetime|date:'H:i'}}<br>
+{% extends "base.html" %}
+{% block content %}
+    {% if results %}
+        {% for result in results %}
+            Desde {{result.origin}} para {{result.destiny}}<br>
+            No dia {{result.from_datetime|date:'d/m/Y'}}
+            Entre as {{result.from_datetime|date:'H:i'}} e as {{result.to_datetime|date:'H:i'}}<br>
 
-    <a href="{{result.get_absolute_url}}">FB</a>
-    {{result.fb_content}}
-<br>
+            <a href="{{result.get_absolute_url}}">FB</a>
+            {{result.fb_content}}
+            <br>
 
-    <a href="{{result.get_contact_user}}">Facebook inbox</a>
-    <a href="{{result.get_more_info}}">Carona more info</a>
-<br>
-{% endfor %}
-</body>
-</html>
+            <a href="{{result.get_contact_user}}">Facebook inbox</a>
+            <a href="{{result.get_more_info}}">Carona more info</a>
+            <br>
+        {% endfor %}
+    {% else%}
+        No se encontraram resultados
+    {% endif %}
+{% endblock content %}

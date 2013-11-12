@@ -1,24 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-{{carona.id}}
-Desde {{carona.origin}} para {{carona.destiny}}<br>
-No dia {{carona.from_datetime|date:'d/m/Y'}}
-Entre as {{carona.from_datetime|date:'H:i'}} e as {{carona.to_datetime|date:'H:i'}}<br>
-<br>
-{% for comment in carona.comments %}
-    {{comment.message}}
+{% extends "base.html" %}
+{% block content %}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Desde {{result.origin}} para {{result.destiny}}
+        <span class="pull-right">
+        <span class="label label-default">{{result.from_datetime|date:'d/m/Y'}}</span>
+        /
+        <span class="label label-success">{{result.from_datetime|date:'H:i'}}</span>
+        -
+        <span class="label label-warning">{{result.to_datetime|date:'H:i'}}</span>
+        </span>
+    </div>
+    <div class="panel-body">
+
+    {{result.fb_content}}
     <br>
-{% endfor %}
+    <br>
 
-<a href="{{carona.get_absolute_url}}">FB</a>
+    {% for comment in result.comments %}
+        <div class="panel panel-info">
+            <div class="panel-body">
+        {{comment.message}}
+        </div>
+        </div>
+    {% endfor %}
 
-<a href="{{carona.get_contact_user}}">Facebook inbox</a>
-
-
-
-</body>
-</html>
+        <a href="{{result.get_contact_user}}">
+            Enviar uma mensagem ao Inbox
+            <img src="/static/images/fb-inbox.jpg" alt="Enviar inbox"/>
+        </a>
+        <br>
+        <a href="{{result.get_more_info}}">Mais informação sobre a Carona</a>
+        <br>
+        <a href="{{result.get_absolute_url}}">Ver post no Facebook</a>
+    </div>
+</div>
+{% endblock content %}

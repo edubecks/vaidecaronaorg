@@ -16,7 +16,6 @@ class DateTimePost(Post):
         ## creation_date
         if 'created_time' in info:
             self.creation_date = datetime.datetime.strptime(info['created_time'], '%Y-%m-%dT%H:%M:%S+0000')
-            print self.creation_date
         return
 
     def retrieve_time_tags(self):

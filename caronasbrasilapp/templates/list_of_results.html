@@ -1,0 +1,27 @@
+{% for result in results %}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Desde {{result.origin}} para {{result.destiny}}
+            <span class="pull-right" >
+            <span class="label label-default">{{result.from_datetime|date:'d/m/Y'}}</span>
+            /
+            <span class="label label-success">{{result.from_datetime|date:'H:i'}}</span>
+            -
+            <span class="label label-warning">{{result.to_datetime|date:'H:i'}}</span>
+            </span>
+    </div>
+        <div class="panel-body">
+        {{result.fb_content}}
+        <br>
+
+        <a href="{{result.get_contact_user}}">
+            Enviar uma mensagem ao Inbox
+            <img src="/static/images/fb-inbox.jpg" alt="Enviar inbox"/>
+        </a>
+            <br>
+        <a href="{{result.get_more_info}}">Mais informação sobre a Carona</a>
+        <br>
+            <a href="{{result.get_absolute_url}}">Ver post no Facebook</a>
+    </div>
+</div>
+{% endfor %}

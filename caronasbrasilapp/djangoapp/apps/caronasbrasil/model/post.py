@@ -25,7 +25,7 @@ class Post(object):
         ##post info
         if 'id' in self._info:
             self.fb_group_id, self.fb_post_id = self._info['id'][:self._info['id'].index('_')], self._info['id']
-            print self.fb_group_id
+            print 'parsing:', self.fb_post_id
 
         ## post comments
         self.comments = []

@@ -4,8 +4,9 @@ from django.db import models
 class CaronaModel(models.Model):
     fb_post_id = models.CharField(max_length=40)
     fb_group_id = models.CharField(max_length=20)
-    fb_content = models.CharField(max_length=1000)
+    fb_content = models.CharField(max_length=1001)
     fb_user_id = models.CharField(max_length=20)
+    fb_creation_date = models.DateTimeField(auto_now=False)
     ## Ex: "sao carlos/SP"
     origin = models.CharField(max_length=33)
     destiny = models.CharField(max_length=33)

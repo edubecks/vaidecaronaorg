@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        jQuery("#navbar-ultimas").attr("class", "active");
+    });
+</script>
+{% endblock javascript %}
+{% block content %}
+    {% if results %}
+        {% include "list_of_results.html" %}
+    {% else%}
+        No se encontraram resultados
+    {% endif %}
+{% endblock content %}

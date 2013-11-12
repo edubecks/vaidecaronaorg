@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        jQuery("#navbar-proximas").attr("class", "active");
+    });
+</script>
+{% endblock javascript %}
+{% block content %}
+
+    {% if results_by_day %}
+        {% for day, results in results_by_day %}
+            <button type="button" class="btn btn-danger">
+                {{day}}
+            </button>
+            <br>
+            <br>
+
+            {% include "list_of_results.html" %}
+        {% endfor %}
+    {% else%}
+        No se encontraram resultados
+    {% endif %}
+{% endblock content %}

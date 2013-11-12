@@ -1,4 +1,6 @@
 # coding: utf-8
+from collections import OrderedDict
+import datetime
 from pprint import pprint
 from djangoapp.apps.caronasbrasil.models import CaronaModel, CaronaGroupModel, ParserErrorsModel
 from django.db.models import Q
@@ -16,6 +18,7 @@ class PersistenceController(object):
             fb_group_id=carona_post.fb_group_id,
             fb_user_id=carona_post.fb_user_id,
             fb_content = carona_post.content,
+            fb_creation_date = carona_post.creation_date,
             origin=carona_post.tag_origin,
             destiny=carona_post.tag_destiny,
             from_datetime=carona_post.tag_time,
@@ -92,3 +95,24 @@ class PersistenceController(object):
 
     def get_carona_info(self, carona_id):
         return CaronaModel.objects.get(id=carona_id)
+
+    def get_last(self, limit=20):
+        return CaronaModel.objects.all().order_by('fb_creation_date')[0:limit]
+
+    def get_next_days(self, days=3):
+        today  = datetime.datetime.now()
+        results = CaronaModel.objects.filter(
+            from_datetime__gte= today,
+            to_datetime__lte= today + datetime.timedelta(days=days)
+        )
+        results_by_day = {}
+        for result in results:
+            the_date = result.from_datetime.date()
+            if not the_date in results_by_day:
+                results_by_day[the_date] = []
+            results_by_day[the_date].append(result)
+
+        results_by_day = sorted(results_by_day.iteritems())
+        pprint(results_by_day)
+        return results_by_day
+        # return OrderedDict(sorted(results_by_day.items(), key=lambda t: t[0]))

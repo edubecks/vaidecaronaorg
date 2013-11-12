@@ -1,6 +1,6 @@
 # coding: utf-8
 from djangoapp.apps.caronasbrasil.main_controller import MainController
-from djangoapp.apps.caronasbrasil.models import CaronaGroupModel, CaronaModel
+from djangoapp.apps.caronasbrasil.models import CaronaGroupModel, CaronaModel, ParserErrorsModel
 
 __author__ = 'edubecks'
 
@@ -24,8 +24,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         ## crawl
-        print 'hello world'
-        # CaronaModel.objects.all().delete()
-        # MainController().crawl_post()
+        CaronaModel.objects.all().delete()
+        ParserErrorsModel.objects.all().delete()
+        MainController().crawl_post(time_interval=60)
         return
 

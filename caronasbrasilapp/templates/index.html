@@ -81,15 +81,16 @@
                     fromTime + "/" + toTime;
             window.location.href = url;
 
-        })
+        });
+
+        $("#navbar-proximas").attr("class", "active");
 
     });
 </script>
 {% endblock javascript %}
 
 {% block content %}
-<div id="content" class="center">
-<div>
+
 <form action="javascript:void(0);">
 
 
@@ -178,6 +179,4 @@
         </div>
     </div>
 </form>
-</div>
-</div>
 {% endblock content %}

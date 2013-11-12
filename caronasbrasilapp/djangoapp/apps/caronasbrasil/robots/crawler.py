@@ -68,7 +68,7 @@ class Crawler(object):
                 has_vagas = carona_post.retrieve_vagas()
 
                 ## check the tag requirements
-                print(has_date_tag, has_time_tag, has_origin_destiny, has_ofereco_procuro)
+                # print(has_date_tag, has_time_tag, has_origin_destiny, has_ofereco_procuro)
                 if has_date_tag and has_time_tag and has_origin_destiny and has_ofereco_procuro:
                     ## saving in the db
                     # pprint(str(carona_post))
@@ -81,7 +81,8 @@ class Crawler(object):
                     print('*******************************************')
                     self.log_not_parsed_post(carona_post)
             else:
-                print('post already parsed', fb_post['id'])
+                pprint('post already parsed', fb_post['id'])
+                pprint('post already parsed', fb_post['message'])
 
 
         return

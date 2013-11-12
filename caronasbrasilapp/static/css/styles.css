@@ -1,7 +1,6 @@
 #content{
-    width: 320px;
     min-height: 400px;
-    padding: 20px;
+    padding: 30px;
 }
 
 .container{
@@ -20,4 +19,14 @@
 .search-button{
     margin-top: 20px;
     width: 200px;
+}
+
+@media screen and (max-width: 800px) {
+    #github-ribbon {
+        display : none !important;
+    }
+}
+
+.panel-heading{
+    min-height: 60px;
 }

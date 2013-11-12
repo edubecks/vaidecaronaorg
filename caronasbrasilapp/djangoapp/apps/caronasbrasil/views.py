@@ -28,12 +28,20 @@ def index(request):
 
 def last(request):
     return render_to_response(
-        'index.html',
+        'last.html',
         {
             'title': 'Caronas brasil',
-            'caronas': PersistenceController().get_carona_paths(),
-            'from_city': 'sao carlos',
-            'from_state': 'SP',
+            'results': PersistenceController().get_last(),
+        },
+        RequestContext(request)
+    )
+
+def next_days(request):
+    return render_to_response(
+        'next_days.html',
+        {
+            'title': 'Caronas brasil',
+            'results_by_day': PersistenceController().get_next_days(),
         },
         RequestContext(request)
     )
@@ -46,7 +54,7 @@ def carona_info(request, carona_id):
         'carona_info.html',
         {
             'title': 'Caronas brasil',
-            'carona': carona,
+            'result': carona,
         },
         RequestContext(request)
     )
