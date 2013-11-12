@@ -32,8 +32,8 @@ class PersistenceController(object):
 
     def get_cities_by_fb_group_id(self, fb_group_id):
         carona_group = CaronaGroupModel.objects.get(fb_group_id=fb_group_id)
-        city1_list = carona_group.city1_list.split(',')
-        city2_list = carona_group.city2_list.split(',')
+        city1_list = carona_group.city1_list.split(':')
+        city2_list = carona_group.city2_list.split(':')
         return (
             carona_group.city1, carona_group.city1_state, city1_list,
             carona_group.city2, carona_group.city2_state, city2_list

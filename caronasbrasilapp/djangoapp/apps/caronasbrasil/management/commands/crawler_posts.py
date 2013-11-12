@@ -10,6 +10,6 @@ class Command(NoArgsCommand):
 
     def handle(self, *args, **options):
         ## execute robot
-        MainController().crawl_post()
+        MainController().crawl_post(time_interval=60)
         return
 

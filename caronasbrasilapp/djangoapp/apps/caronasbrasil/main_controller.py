@@ -8,12 +8,11 @@ __author__ = 'edubecks'
 class MainController(object):
 
     def __init__(self):
-
         return
 
-    def crawl_post(self):
+    def crawl_post(self, time_interval=10):
         ## run crawler every 10 minutes
-        crawler = Crawler(time_interval=10)
+        crawler = Crawler(time_interval)
         carona_groups = CaronaGroupModel.objects.all()
         pprint(carona_groups.values())
         for carona_group in carona_groups:

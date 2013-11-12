@@ -31,7 +31,7 @@ class Crawler(object):
 
         for fb_post in feed:
 
-            pprint(feed)
+            # pprint(feed)
 
             ## check if the post is not commented
             if (fb_post['message'][:2]!= '//'
@@ -71,8 +71,8 @@ class Crawler(object):
                 print(has_date_tag, has_time_tag, has_origin_destiny, has_ofereco_procuro)
                 if has_date_tag and has_time_tag and has_origin_destiny and has_ofereco_procuro:
                     ## saving in the db
-                    pprint(str(carona_post))
-                    pprint('---------------------')
+                    # pprint(str(carona_post))
+                    # pprint('---------------------')
                     persistence.add_carona(carona_post)
                 else:
                     print('*************** wrong')

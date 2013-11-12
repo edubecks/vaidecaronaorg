@@ -336,9 +336,9 @@ class CaronaPost(DateTimePost):
             regex = re.compile(regex_expression, re.IGNORECASE | re.MULTILINE)
             match = regex.search(self.content_clean)
             # print self.content_clean
-            print regex_expression
+            # print regex_expression
             if match:
-                print match.groups(), match.lastindex, day
+                # print match.groups(), match.lastindex, day
                 d = self.creation_date
                 max_days = 6
                 while d.weekday() != day and max_days: ## day: number of day, monday=0
