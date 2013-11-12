@@ -10,6 +10,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        ## clean
+        CaronaGroupModel.objects.all().delete()
+
+
         ## Test
         ## https://www.facebook.com/groups/641749869191341/
         # fb_group_id = '641749869191341'
@@ -26,20 +30,21 @@ class Command(BaseCommand):
         fb_group_id = '144978565569620'
         city1 = 'sao paulo'
         city1_state = 'SP'
-        city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
+        city1_list = [u'sao paulo', u'Sanpa', u'Sampa', ur'Sao\s*Paulo', u'SP', ur'sao paulo\s?\(.*?\)',
+                      'sao paulo, sp, br']
         city2 = 'sao carlos'
         city2_state = 'SP'
-        city2_list = [u'Sao Carlos', u'Sanca', u'Samca', u'SC']
+        city2_list = [u'sao carlos', u'Sanca', u'Samca', u'Sao\s*Carlos', u'SC', 'sao carlos, sp, br']
 
         ## saving model
         CaronaGroupModel.objects.create(
             fb_group_id=fb_group_id,
             city1=city1,
             city1_state=city1_state,
-            city1_list=','.join(city1_list),
+            city1_list=':'.join(city1_list),
             city2=city2,
             city2_state=city2_state,
-            city2_list=','.join(city2_list)
+            city2_list=':'.join(city2_list)
         )
         return
 
