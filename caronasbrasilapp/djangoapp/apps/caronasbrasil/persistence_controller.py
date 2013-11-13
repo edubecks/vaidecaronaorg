@@ -97,7 +97,7 @@ class PersistenceController(object):
         return CaronaModel.objects.get(id=carona_id)
 
     def get_last(self, limit=20):
-        return CaronaModel.objects.all().order_by('fb_creation_date')[0:limit]
+        return CaronaModel.objects.all().order_by('fb_creation_date')[:limit]
 
     def get_next_days(self, days=3):
         today  = datetime.datetime.now()
@@ -113,6 +113,5 @@ class PersistenceController(object):
             results_by_day[the_date].append(result)
 
         results_by_day = sorted(results_by_day.iteritems())
-        pprint(results_by_day)
         return results_by_day
         # return OrderedDict(sorted(results_by_day.items(), key=lambda t: t[0]))

@@ -92,7 +92,6 @@ else:
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(PROJECT_ROOT, os.path.pardir))
 STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, 'staticfiles/'))
-print PROJECT_ROOT, STATIC_ROOT, PROJECT_DIR
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -101,7 +100,6 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-print STATICFILES_DIRS
 
 # List of finder classes that know how to find static files in
 # various locations.
