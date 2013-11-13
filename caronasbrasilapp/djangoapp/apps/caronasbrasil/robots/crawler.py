@@ -40,7 +40,6 @@ class Crawler(object):
             if (not self.post_is_commented(fb_post['message'])
                 ## check if it is already parsed
                 and not persistence.exists_post(fb_post['id'])):
-                print 'here'
 
                 # pprint(fb_post)
                 ## create new carona post
