@@ -88,7 +88,7 @@ MEDIA_URL = ''
 if DEBUG:
     STATIC_URL = '/static/'
 else:
-    STATIC_URL = 'http://commondatastorage.googleapis.com/caronas-brasil/staticfiles/'
+    STATIC_URL = 'https://s3.amazonaws.com/caronas-brasil/staticfiles/'
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(PROJECT_ROOT, os.path.pardir))
 STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, 'staticfiles/'))
