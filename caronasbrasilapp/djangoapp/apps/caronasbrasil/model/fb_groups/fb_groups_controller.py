@@ -33,5 +33,12 @@ class FBGroupsController(object):
             since = int(time.mktime((datetime.datetime.now() - last_time_checked).timetuple()))
             return self.facebook_graph.get_connections(self.fb_group_id, 'feed', since=since)['data']
 
+    def exists_post(self, fb_post_id):
+        try:
+            post = self.facebook_graph.get_object(fb_post_id)
+            return True
+        except facebook.GraphAPIError:
+            return False
+
     def get_comments(self, fb_post_id):
         return  self.facebook_graph.get_connections(fb_post_id, 'comments')['data']

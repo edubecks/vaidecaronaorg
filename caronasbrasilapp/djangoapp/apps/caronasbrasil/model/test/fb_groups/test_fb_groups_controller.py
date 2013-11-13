@@ -38,8 +38,14 @@ class FBGroupsControllerTestCase(TestCase):
     def test_get_comments(self):
         group_id = '641749869191341'
         fbgroups_controller = FBGroupsController(group_id)
-
         comments = fbgroups_controller.get_comments('641749869191341_666135846752743')
         pprint(comments)
 
+        return
+
+    def test_exists_post(self):
+        fb_group_id = '144978565569620'
+        fb_post_id = '144978565569620_602785809788891'
+        fbgroups_controller = FBGroupsController(fb_group_id)
+        comments = fbgroups_controller.exists_post(fb_post_id)
         return
