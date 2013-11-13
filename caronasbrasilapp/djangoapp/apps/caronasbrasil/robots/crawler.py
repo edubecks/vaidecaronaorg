@@ -1,5 +1,6 @@
 # coding: utf-8
 from pprint import pprint
+import unidecode
 from djangoapp.apps.caronasbrasil.model.caronasbrasil.carona_post import CaronaPost
 from djangoapp.apps.caronasbrasil.model.fb_groups.fb_groups_controller import FBGroupsController
 from djangoapp.apps.caronasbrasil.persistence_controller import PersistenceController
@@ -18,6 +19,10 @@ class Crawler(object):
                                                  carona_post.fb_post_id, carona_post.content_clean)
         return
 
+    def post_is_commented(self, message):
+        message_decoded = unidecode.unidecode(message)
+        return message_decoded[:2]=='//'
+
     def retrieve_posts(self, fb_group_id):
 
         ## persistence
@@ -31,12 +36,11 @@ class Crawler(object):
 
         for fb_post in feed:
 
-            # pprint(feed)
-
             ## check if the post is not commented
-            if (fb_post['message'][:2]!= '//'
+            if (not self.post_is_commented(fb_post['message'])
                 ## check if it is already parsed
                 and not persistence.exists_post(fb_post['id'])):
+                print 'here'
 
                 # pprint(fb_post)
                 ## create new carona post
@@ -81,8 +85,8 @@ class Crawler(object):
                     print('*******************************************')
                     self.log_not_parsed_post(carona_post)
             else:
-                pprint('post already parsed', fb_post['id'])
-                pprint('post already parsed', fb_post['message'])
+                ## TODO: call logger
+                pass
 
 
         return
