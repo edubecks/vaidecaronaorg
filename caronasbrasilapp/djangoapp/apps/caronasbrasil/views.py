@@ -1,3 +1,4 @@
+# coding=utf-8
 from datetime import datetime
 from pprint import pprint
 from django.contrib.auth.decorators import login_required
@@ -13,50 +14,49 @@ from djangoapp.apps.caronasbrasil.model.fb_groups.fb_groups_controller import FB
 from djangoapp.apps.caronasbrasil.persistence_controller import PersistenceController
 
 
+def my_render(request, template, data):
+    ## default variables
+    data.update({
+        'title_site': 'Caronas Brasil',
+    })
+    return render(request, template, data)
+
 def index(request):
-    return render_to_response(
-        'index.html',
+    return my_render(request, 'index.html',
         {
             'title': 'Caronas brasil',
             'caronas': PersistenceController().get_carona_paths(),
             'from_city': 'sao carlos',
             'from_state': 'SP',
-        },
-        RequestContext(request)
+        }
     )
 
 
 def last(request):
-    return render_to_response(
-        'last.html',
+    return my_render(request, 'last.html',
         {
-            'title': 'Caronas brasil',
+            'title': 'Ultimas caronas adicionadas ao sistema - Caronas brasil',
             'results': PersistenceController().get_last(),
-        },
-        RequestContext(request)
+        }
     )
 
 def next_days(request):
-    return render_to_response(
-        'next_days.html',
+    return my_render(request, 'next_days.html',
         {
-            'title': 'Caronas brasil',
+            'title': 'Caronas nos proximos dias - Caronas brasil',
             'results_by_day': PersistenceController().get_next_days(),
-        },
-        RequestContext(request)
+        }
     )
 
 def carona_info(request, carona_id):
     carona = PersistenceController().get_carona_info(carona_id)
     comments = FBGroupsController(carona.fb_group_id).get_comments(carona.fb_post_id)
     carona.comments =  comments
-    return render_to_response(
-        'carona_info.html',
+    return my_render(request,'carona_info.html',
         {
-            'title': 'Caronas brasil',
+            'title': u'Informação sobre Caronas brasil',
             'result': carona,
-        },
-        RequestContext(request)
+        }
     )
 
 def search(request, op, from_city, to_city, date, from_time, to_time):
@@ -97,16 +97,11 @@ def search(request, op, from_city, to_city, date, from_time, to_time):
         'to_datetime': to_datetime,
     })
 
-    pprint(results.values())
-
-
-    return render_to_response(
-        'results.html',
+    return my_render(request, 'results.html',
         {
-            'title': 'Caronas brasil',
+            'title': 'Buscar procurar oferecer - Caronas brasil',
             'results': results,
-        },
-        RequestContext(request)
+        }
     )
 
 #

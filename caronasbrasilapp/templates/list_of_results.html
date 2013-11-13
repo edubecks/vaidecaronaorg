@@ -13,15 +13,22 @@
         <div class="panel-body">
         {{result.fb_content}}
         <br>
-
-        <a href="{{result.get_contact_user}}">
-            Enviar uma mensagem ao Inbox
-            <img src="/static/images/fb-inbox.jpg" alt="Enviar inbox"/>
-        </a>
-            <br>
-        <a href="{{result.get_more_info}}">Mais informação sobre a Carona</a>
         <br>
-            <a href="{{result.get_absolute_url}}">Ver post no Facebook</a>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <a href="{{result.get_contact_user}}">
+                Enviar uma mensagem ao Inbox
+                <img src="/static/images/fb-inbox.jpg" alt="Enviar inbox"/>
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <a href="{{result.get_more_info}}">Mais informação sobre a Carona</a>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <a href="{{result.get_absolute_url}}">Ver post no Facebook</a>
+            </div>
+        </div>
     </div>
 </div>
 {% endfor %}
