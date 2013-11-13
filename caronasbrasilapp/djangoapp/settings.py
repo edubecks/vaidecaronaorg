@@ -3,7 +3,7 @@ import socket
 import os
 
 DEBUG = False
-ALLOWED_HOSTS = ['caronasbrasil.herokuapp.com']
+ALLOWED_HOSTS = ['.herokuapp.com']
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
