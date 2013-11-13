@@ -1,6 +1,6 @@
 #content{
     min-height: 400px;
-    padding: 30px;
+    padding: 5px;
 }
 
 .container{
@@ -29,4 +29,8 @@
 
 .panel-heading{
     min-height: 60px;
+}
+
+li#navbar-fb-share{
+   padding: 15px;
 }
