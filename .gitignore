@@ -2,3 +2,4 @@ configuration.py
 scripts/
 atlassian-ide-plugin.xml
 externaltools/postgresql-driver-license.txt
+caronasbrasilapp/staticfiles/*
