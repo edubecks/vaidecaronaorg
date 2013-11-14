@@ -17,14 +17,13 @@ from djangoapp.apps.caronasbrasil.persistence_controller import PersistenceContr
 def my_render(request, template, data):
     ## default variables
     data.update({
-        'title_site': 'Caronas Brasil',
+        'title_site': 'Vai de Carona',
     })
     return render(request, template, data)
 
 def index(request):
     return my_render(request, 'index.html',
         {
-            'title': 'Caronas brasil',
             'caronas': PersistenceController().get_carona_paths(),
             'from_city': 'sao carlos',
             'from_state': 'SP',
@@ -35,7 +34,7 @@ def index(request):
 def last(request):
     return my_render(request, 'last.html',
         {
-            'title': 'Ultimas caronas adicionadas ao sistema - Caronas brasil',
+            'title': 'Ultimas caronas adicionadas ao sistema',
             'results': PersistenceController().get_last(),
         }
     )
@@ -43,7 +42,7 @@ def last(request):
 def next_days(request):
     return my_render(request, 'next_days.html',
         {
-            'title': 'Caronas nos proximos dias - Caronas brasil',
+            'title': 'Caronas nos proximos dias',
             'results_by_day': PersistenceController().get_next_days(),
         }
     )
@@ -54,7 +53,7 @@ def carona_info(request, carona_id):
     carona.comments =  comments
     return my_render(request,'carona_info.html',
         {
-            'title': u'Informação sobre Caronas brasil',
+            'title': u'Informação sobre a carona',
             'result': carona,
         }
     )

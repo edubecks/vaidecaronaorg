@@ -5,7 +5,13 @@
 {% load get_item from dict_operations %}
 <html>
 <head>
-    <title>{{title}}</title>
+    {% if title %}
+        <title>{{ title }} - {{ title_site }}</title>
+    {% else %}
+        <title>{{ title_site }}</title>
+    {% endif %}
+
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Analytics -->
     {% include "analytics.html" %}
@@ -38,15 +44,6 @@
 {% include "facebook.html" %}
 <div class="container">
     {% include "header.html" %}
-
-    <div  id="github-ribbon">
-    <a href="https://github.com/edubecks/cbrasil">
-        <img style="position: absolute; top: 0; right: 0; border: 0;"
-             src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
-             alt="Fork me on GitHub"></a>
-    </div>
-
-
     <div id="content" class="center">
         {% block content %}
         {% endblock content %}
