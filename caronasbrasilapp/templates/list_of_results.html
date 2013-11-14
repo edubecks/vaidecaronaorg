@@ -12,15 +12,22 @@
             </span>
     </div>
         <div class="panel-body">
+            <div class="result-fb-author-image">
+            <a href="{{ result.get_contact_user }}">
+                <img src="{{ result.get_author_image }}" alt=""/>
+            </a>
+            </div>
+        <div class="result-fb-content" style="width: calc(100% - 70px); float: right">
         {{result.fb_content}}
+        </div>
         <br>
         <br>
 
-        <div class="row">
+        <div class="row result">
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <a href="{{result.get_contact_user}}">
                 Mensagem ao Inbox
-                <img src="{% static 'images/fb-inbox.jpg' %}" alt="Enviar inbox"/>
+                <img src="{% static 'images/fb-inbox.png' %}" alt="Enviar inbox"/>
                 </a>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">

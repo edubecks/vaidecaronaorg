@@ -34,3 +34,26 @@
 li#navbar-fb-share{
    padding: 15px;
 }
+
+.navbar-brand{
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}
+
+.label{
+    font-size: 13px;
+}
+
+.result{
+    clear       : both;
+    padding-top : 10px;
+}
+
+.result-fb-author-image{
+    float : left;
+}
+
+.result-fb-content{
+    width : calc(100% - 70px);
+    float : right;
+}

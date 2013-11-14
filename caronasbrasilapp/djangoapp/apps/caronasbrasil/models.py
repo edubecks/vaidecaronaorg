@@ -25,6 +25,9 @@ class CaronaModel(models.Model):
     def get_more_info(self):
         return '/caronas/'+str(self.id)
 
+    def get_author_image(self):
+        return 'http://graph.facebook.com/'+self.fb_user_id+'/picture?type=square'
+
 
 class CaronaGroupModel(models.Model):
     fb_group_id = models.CharField(max_length=20)
