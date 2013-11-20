@@ -48,6 +48,9 @@ def next_days(request):
         }
     )
 
+def quem_somos(request):
+    return my_render(request, 'quem_somos.html',{})
+
 def carona_info(request, carona_id):
     carona = PersistenceController().get_carona_info(carona_id)
     comments = FBGroupsController(carona.fb_group_id).get_comments(carona.fb_post_id)

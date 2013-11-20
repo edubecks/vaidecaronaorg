@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load url from future %}
 <div class="header">
 <nav class="navbar navbar-default" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -18,8 +19,9 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
             <li id="navbar-buscar"><a href="/">Buscar</a></li>
-            <li id="navbar-ultimas"><a href="/ultimas/" >Ultimas adicionadas</a></li>
-            <li id="navbar-proximas"><a href="/proximos-dias/" >Proximos dias</a></li>
+            <li id="navbar-ultimas"><a href="{% url 'last' %}" >Últimas</a></li>
+            <li id="navbar-proximas"><a href="{% url 'next_days' %}" >Próximas</a></li>
+            <li id="navbar-quem-somos"><a href="{% url 'quem_somos' %}" >Quem somos?</a></li>
             <li id="navbar-fb-share">
                 <div class="fb-share-button" data-href="http://www.vaidecarona.org"
                      data-width="60" data-type="button_count"></div></li>

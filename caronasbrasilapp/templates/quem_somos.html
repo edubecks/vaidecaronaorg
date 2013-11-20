@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            jQuery("#navbar-quem-somos").attr("class", "active");
+        });
+    </script>
+{% endblock javascript %}
+{% block content %}
+    <h1><a href="http://www.vaidecarona.org">Vai de carona</a></h1>
+
+    <p><strong>Vai de carona</strong> é um aplicativo que permite procurar e oferecer procurar caronas.
+        Assim ajudamos o meio ambiente combatir a polução e viajar de forma conjunta.</p>
+
+    <p>A idéia surgiu da necessidade e dificuldade que tem os universitarios para arrumar caronas da
+        cidade de origem até a cidade onde esta o Campus universitario. São muitos estudantes se
+        deslocando entre as diversas cidades. </p>
+
+    <p>Dessa forma, <a href="http://www.vaidecarona.org">Vai de carona</a> resolve esse problema,
+        organizando as caronas de forma que a busca delas seja simples, facilitando a vida dos
+        <em>caronistas</em> e <em>caroneiros</em>.
+    </p>
+{% endblock content %}
