@@ -18,7 +18,7 @@ def my_render(request, template, data):
     ## default variables
     data.update({
         'title_site': 'Vai de Carona',
-        'version': '2013.11.14',
+        'version': '2013.11.20',
     })
     return render(request, template, data)
 
@@ -47,6 +47,9 @@ def next_days(request):
             'results_by_day': PersistenceController().get_next_days(),
         }
     )
+
+def quem_somos(request):
+    return my_render(request, 'quem_somos.html',{})
 
 def carona_info(request, carona_id):
     carona = PersistenceController().get_carona_info(carona_id)

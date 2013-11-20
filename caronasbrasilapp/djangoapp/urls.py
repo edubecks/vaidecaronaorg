@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from djangoapp.apps.caronasbrasil.views import index, search, carona_info, last, next_days
+import djangoapp.apps.caronasbrasil.views as views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -9,7 +9,8 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'djangoapp.views.home', name='home'),
     # url(r'^djangoapp/', include('djangoapp.foo.urls')),
-    url(r'^$', index),
+    url(r'^$', views.index, name='index'),
+    url(r'^quem-somos$', views.quem_somos, name='quem_somos'),
 
     ## facebook login
     # url(r'^done/$', done),
@@ -17,13 +18,15 @@ urlpatterns = patterns('',
 
     ## caronas brasil
     # procurar/[-\w]+/[-\w]+/[-\d]+/[-\d:]+/[-\d:]+
-    url(r'^(?P<op>procurar)/(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<date>[-\d]+)/(?P<from_time>[-\d:]+)/(?P<to_time>[-\d:]+)/$', search),
-    url(r'^(?P<op>oferecer)/(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<date>[-\d]+)/(?P<from_time>[-\d:]+)/(?P<to_time>[-\d:]+)/$', search),
+    url(r'^(?P<op>procurar)/(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<date>[-\d]+)/(?P<from_time>[-\d:]+)/(?P<to_time>[-\d:]+)/$',
+        views.search, name='search_procurar'),
+    url(r'^(?P<op>oferecer)/(?P<from_city>[-\w]+)/(?P<to_city>[-\w]+)/(?P<date>[-\d]+)/(?P<from_time>[-\d:]+)/(?P<to_time>[-\d:]+)/$',
+        views.search, name='search-oferecer'),
 
     ## info caronas
-    url(r'caronas/(?P<carona_id>.*)', carona_info ),
-    url(r'ultimas/$', last),
-    url(r'proximos-dias/$', next_days),
+    url(r'caronas/(?P<carona_id>.*)', views.carona_info, name='carona_info' ),
+    url(r'ultimas/$', views.last, name='last'),
+    url(r'proximos-dias/$', views.next_days, name='next_days'),
 
 
     # Uncomment the admin/doc line below to enable admin documentation:
