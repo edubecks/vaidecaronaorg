@@ -35,6 +35,7 @@ class CaronaPost(DateTimePost):
         ## creating regex
         regex_cities_pattern = [
             r'\s*-{0,10}\s*>{1,10}\s*',
+            r'\s*~{0,10}\s*>{1,10}\s*',
             r'\s*-{1,10}\s*',
             r'\s*para\s*',
             r'\s*pra\s*',
@@ -50,7 +51,7 @@ class CaronaPost(DateTimePost):
         ]
 
         ## TODO-optimizar
-        ## crear las combinaciones en el momento y no antes
+        ## criar combinacoes na hora e nao antes
         regex_city1_city2 = []
         regex_city2_city1 = []
         for city1 in self.city1_list:
@@ -88,6 +89,31 @@ class CaronaPost(DateTimePost):
                 # print self.tag_origin, self.tag_destiny
                 return True
                 # print(self.content_clean, regex_expression )
+
+        regex_to_city_pattern = [
+            r'\s*para\s*({to_city})',
+            r'\s*pra\s*({to_city})',
+            r'\s*p/\s*({to_city})',
+        ]
+
+        for regex_expression in regex_to_city_pattern:
+            ## to city1
+            for city in self.city1_list:
+                regex = re.compile(regex_expression.format(to_city=city) , re.IGNORECASE | re.MULTILINE)
+                match = regex.search(self.content_clean)
+                if match:
+                    self.tag_origin = city2
+                    self.tag_destiny = city1
+                    return True
+
+            ## to city2
+            for city in self.city2_list:
+                regex = re.compile(regex_expression.format(to_city=city) , re.IGNORECASE | re.MULTILINE)
+                match = regex.search(self.content_clean)
+                if match:
+                    self.tag_origin = city1
+                    self.tag_destiny = city2
+                    return True
 
         return False
 

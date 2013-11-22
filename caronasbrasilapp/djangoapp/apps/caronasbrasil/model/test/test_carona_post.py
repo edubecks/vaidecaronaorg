@@ -10,59 +10,7 @@ from unittest import TestCase
 
 class CaronaPostTestCase(TestCase):
     def setUp(self):
-        self.posts_dict = [
-            {
-            'message': u'''Ofereço São Paulo -> São Carlos Sexta feira - 20 de outubro Por volta do 7:31hrs Saindo do metro consolação. 1 vaga'''},
-            {
-            'message': u'''Ofereço São Paulo -> São Carlos Sexta feira - 20/09 Por volta do 7:31 hrs Saindo do metro consolação. 1 vaga'''},
-            {
-            'message': u'''Ofereço São Paulo -> São Carlos Sexta feira - segunda 20 Por volta do 7:31 h Saindo do metro consolação. 1 vaga'''},
-            {
-            'message': u'''Ofereço São Paulo -> São Carlos Sexta feira - 2da feira Por volta do 7:31h Saindo do metro consolação. 1 vaga'''},
-            {
-            'message': u'''Ofereço São Paulo -> São Carlos Sexta feira - 2 feira Por volta do 7:31pm Saindo do metro consolação. 1 vaga'''},
-            {
-            'message': u'''Ofereço São Paulo -> São Carlos Sexta feira - 3ca feira Por volta do 7:31am Saindo do metro consolação. 1 vaga'''},
-            {
-            'message': u'''Procuro São Paulo -> São Carlos Sexta feira - 4ta feira Por volta do 7h31 am Saindo do metro consolação. duas  vagas'''},
-            {
-            'message': u'''Procuro São Paulo -> São Carlos Sexta feira - 5ta feira Por volta do 7:31 horas Saindo do metro consolação. três  vagas'''},
-            {
-            'message': u'''Procuro São Paulo -> São Carlos Sexta feira - 6ta feira Por volta do 10 horas Saindo do metro consolação. quatro  vagas'''},
-            {
-            'message': u'''Procuro São Paulo -> São Carlos Sexta feira - sabado Por volta do 10pm Saindo do metro consolação. 2  vagas'''},
-            {
-            'message': u'''Procuro São Paulo -> São Carlos Sexta feira - domingo Por volta do 10 am Saindo do metro consolação. 2  vagas'''},
-            {
-            'message': u'''Procuro São Paulo -> São Carlos Sexta feira - 20/09 Por volta do 10 p.m. Saindo do metro consolação. 2  vagas'''},
-            {
-            'message': u'''Procuro São Paulo -> São Carlos Sexta feira - 20/09 Por volta do 10 pm. Saindo do metro consolação. 2  vagas'''},
-            {
-            'message': u'''Busco São Paulo -> São Carlos Sexta feira - 20/09 Por volta do 15:10 hrs Saindo do metro consolação. 3   lugares'''},
-            {
-            'message': u'''procuro São Paulo -> São Carlos Sexta feira - 20/09 Por volta do 7 am Saindo do metro consolação. Carro com 4   pessoas'''},
-            {
-            'message': u'''ofereco São Paulo -> São Carlos Sexta feira - 20/09 Por volta do 7 pm Saindo do metro consolação. Sobram 2  lugares'''},
-            {
-            'message': u'''ofereco São Paulo -> São Carlos Sexta feira - 20/09 Por volta das 10 da manha Saindo do metro consolação. Sobram 2  lugares'''},
-            {
-            'message': u'''ofereco São Paulo -> São Carlos Sexta feira - 20/09 Por volta das 3 da tarde Saindo do metro consolação. Sobram 2  lugares'''},
-        ]
 
-        self.tags = [
-            u'São Paulo -> São Carlos',
-            u'São Paulo > São Carlos',
-            u'São Paulo -> SC',
-            u'SP -> SC',
-            u'SP - SC',
-            u'SÃO CARLOS para SÃO PAULO',
-            u'SÃO PAULO ==> SÃO CARLOS',
-            u'SP >>> Sanca',
-            u'Sampa --> Sanca',
-            u'São Carlos - São Paulo',
-            u'Sanca 》São Paulo',
-            u'SP->SC',
-        ]
 
         self.cities = [
             [u'Sanpa', u'Sampa', u'Sao Paulo', u'SP'],
@@ -305,6 +253,13 @@ class CaronaPostTestCase(TestCase):
 
     
         example_posts = [
+            {'message': u'''"procuro carona pra sp amanha (sexta) a partir das 18h.  (19) 9- 8178-5217 ou inbox.''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
+            {'message': u'''ofereco carona de sao carlos p/ sao paulo''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
+            {'message': u'''ofereco carona amanha (quinta) pra sampa saindo ''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
+            {'message': u'''ofereco!  sao paulo (ou santo andre) ~> sao carlos ''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
+            {'message': u'''carona p/ Sao Paulo''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
+            {'message': u'''ofereco carona para sao paulo''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
+            {'message': u'''procuro para sao paulo''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
             {'message': u'''carona sao carlos / sao paulo''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
             {'message': u'''São Paulo -->> São Carlos',      go Por v 2  vagas''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
             {'message': u'''São Paulo -> São Carlos',       go Por v 2  vagas''', 'created_time': '2013-10-10T00:11:02+0000','from': {'id': '1'}},
@@ -327,10 +282,12 @@ class CaronaPostTestCase(TestCase):
             post.city1_state = 'SP'
             post.city2 = 'sao carlos'
             post.city2_state = 'SP'
-            post.city1_list = [u'Sao Paulo', u'Sanpa', u'Sampa', u'SP']
-            post.city2_list = [u'Sao Carlos', u'Sanca', u'Samca', u'SC']
-            self.assertTrue(post.retrieve_origin_destiny(), 'found origin and destiny')
+            post.city1_list = [u'Sanpa', u'Sampa', ur'SP', ur'sao\s*paulo\s?(\(.*?\))?',
+                          'sao paulo, sp, br', 'spaulo']
+            post.city2_list = [u'Sanca', u'Samca', ur'Sao\s*Carlos', u'SC', 'sao carlos, sp, br',
+                          'scarlos']
             print(post.content_clean)
+            self.assertTrue(post.retrieve_origin_destiny(), 'found origin and destiny')
             print(post.tag_origin, ' --> ', post.tag_destiny)
         return
 
