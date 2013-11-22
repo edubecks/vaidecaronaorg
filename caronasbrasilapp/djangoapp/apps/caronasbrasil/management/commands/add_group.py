@@ -30,11 +30,12 @@ class Command(BaseCommand):
         fb_group_id = '144978565569620'
         city1 = 'sao paulo'
         city1_state = 'SP'
-        city1_list = [u'sao paulo', u'Sanpa', u'Sampa', ur'Sao\s*Paulo', u'SP', ur'sao paulo\s?\(.*?\)',
-                      'sao paulo, sp, br']
         city2 = 'sao carlos'
         city2_state = 'SP'
-        city2_list = [u'sao carlos', u'Sanca', u'Samca', u'Sao\s*Carlos', u'SC', 'sao carlos, sp, br']
+        city1_list = [u'Sanpa', u'Sampa', ur'SP', ur'sao\s*paulo\s?(\(.*?\))?',
+                           'sao paulo, sp, br', 'spaulo']
+        city2_list = [u'Sanca', u'Samca', ur'Sao\s*Carlos', u'SC', 'sao carlos, sp, br',
+                           'scarlos']
 
         ## saving model
         CaronaGroupModel.objects.create(
