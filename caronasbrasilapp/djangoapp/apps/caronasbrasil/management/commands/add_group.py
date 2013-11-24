@@ -77,10 +77,10 @@ class Command(BaseCommand):
                     fb_group_id=group['fb_group_id'],
                     city1=group['city1'],
                     city1_state=group['city1_state'],
-                    city1_list=group[':'.join(group['city1_list'])],
+                    city1_list=':'.join(group['city1_list']),
                     city2=group['city2'],
                     city2_state=group['city2_state'],
-                    city2_list=group[':'.join(group['city2_list'])]
+                    city2_list=':'.join(group['city2_list'])
                 )
 
         return
