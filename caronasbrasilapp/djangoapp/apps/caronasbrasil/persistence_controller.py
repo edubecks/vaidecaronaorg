@@ -115,3 +115,11 @@ class PersistenceController(object):
         results_by_day = sorted(results_by_day.iteritems())
         return results_by_day
         # return OrderedDict(sorted(results_by_day.items(), key=lambda t: t[0]))
+
+    def clean_old_posts(self):
+        # today = datetime.datetime.now()
+        yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
+        results  = CaronaModel.objects.filter(to_datetime__lt =  yesterday)
+        # pprint([v for v in results.values()])
+        results.delete()
+        return
