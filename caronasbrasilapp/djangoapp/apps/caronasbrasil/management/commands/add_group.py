@@ -24,28 +24,64 @@ class Command(BaseCommand):
         # city2_state = 'SP'
         # city2_list = [u'Sao Carlos', u'Sanca', u'Samca', u'SC']
 
+        fb_groups = [
+            ## Caronas sao carlos - sao paulo
+            ## https://www.facebook.com/groups/caronascsp/
+            {
+                'fb_group_id': '144978565569620',
+                'city1' : 'sao paulo',
+                'city1_state' : 'SP',
+                'city2' : 'sao carlos',
+                'city2_state' : 'SP',
+                'city1_list' : [u'Sanpa', u'Sampa', ur'SP', ur'sao\s*paulo\s?(\(.*?\))?',
+                              'sao paulo, sp, br', 'spaulo'],
+                'city2_list' : [u'Sanca', u'Samca', ur'Sao\s*Carlos', u'SC', 'sao carlos, sp, br',
+                              'scarlos']
+            },
 
-        ## Caronas sao carlos
-        ## https://www.facebook.com/groups/caronascsp/
-        fb_group_id = '144978565569620'
-        city1 = 'sao paulo'
-        city1_state = 'SP'
-        city2 = 'sao carlos'
-        city2_state = 'SP'
-        city1_list = [u'Sanpa', u'Sampa', ur'SP', ur'sao\s*paulo\s?(\(.*?\))?',
-                           'sao paulo, sp, br', 'spaulo']
-        city2_list = [u'Sanca', u'Samca', ur'Sao\s*Carlos', u'SC', 'sao carlos, sp, br',
-                           'scarlos']
+            ## Caronas sao carlos - rio claro
+            ## https://www.facebook.com/groups/134844749969747/
+            {
+                'fb_group_id': '134844749969747',
+                'city1' : 'rio claro',
+                'city1_state' : 'SP',
+                'city2' : 'sao carlos',
+                'city2_state' : 'SP',
+                'city1_list' : [ur'RC', ur'rio\s*claro\s?(\(.*?\))?', 'rio claro, sp, br', 'rclaro', 'R\.C.'],
+                'city2_list' : [u'Sanca', u'Samca', ur'Sao\s*Carlos', u'SC', 'sao carlos, sp, br',
+                              'scarlos']
+            },
 
-        ## saving model
-        CaronaGroupModel.objects.create(
-            fb_group_id=fb_group_id,
-            city1=city1,
-            city1_state=city1_state,
-            city1_list=':'.join(city1_list),
-            city2=city2,
-            city2_state=city2_state,
-            city2_list=':'.join(city2_list)
-        )
+            ## Caronas sao carlos - campinas
+            ## https://www.facebook.com/groups/caronasancacps/
+            {
+                'fb_group_id': '102514733197800',
+                'city1' : 'campinas',
+                'city1_state' : 'SP',
+                'city2' : 'sao carlos',
+                'city2_state' : 'SP',
+                'city1_list' : [ur'campinas', 'campinas, sp, br', 'cps', 'camps',
+                                ur'campinas\s?(\(.*?\))?',],
+                'city2_list' : [u'Sanca', u'Samca', ur'Sao\s*Carlos', u'SC', 'sao carlos, sp, br',
+                              'scarlos']
+            },
+
+
+
+        ]
+        
+        for group in fb_groups:
+            if 'fb_group_id' in group:
+                ## saving model
+                CaronaGroupModel.objects.create(
+                    fb_group_id=group['fb_group_id'],
+                    city1=group['city1'],
+                    city1_state=group['city1_state'],
+                    city1_list=group[':'.join(group['city1_list'])],
+                    city2=group['city2'],
+                    city2_state=group['city2_state'],
+                    city2_list=group[':'.join(group['city2_list'])]
+                )
+
         return
 
