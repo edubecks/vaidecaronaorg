@@ -1,6 +1,7 @@
 # coding: utf-8
 from djangoapp.apps.caronasbrasil.main_controller import MainController
 from djangoapp.apps.caronasbrasil.models import CaronaGroupModel, CaronaModel, ParserErrorsModel
+from djangoapp.apps.caronasbrasil.persistence_controller import PersistenceController
 
 __author__ = 'edubecks'
 
@@ -24,8 +25,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         ## crawl
-        CaronaModel.objects.all().delete()
-        ParserErrorsModel.objects.all().delete()
-        MainController().crawl_post(time_interval=60)
+        # CaronaModel.objects.all().delete()
+        # ParserErrorsModel.objects.all().delete()
+        # MainController().crawl_post(time_interval=60)
+
+        ## persistence
+        pc = PersistenceController()
+        pc.clean_old_posts()
         return
 
