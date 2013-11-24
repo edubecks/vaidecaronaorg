@@ -18,7 +18,7 @@ def my_render(request, template, data):
     ## default variables
     data.update({
         'title_site': 'Vai de Carona',
-        'version': '2013.11.22',
+        'version': '2013.11.24',
     })
     return render(request, template, data)
 
