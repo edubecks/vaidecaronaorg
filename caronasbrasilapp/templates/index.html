@@ -39,11 +39,9 @@
         var fromState = $('select[name="from-state-list"]').val();
         var fromCity = $('select[name="from-city-list"]').val();
         var cities_list = "";
-        // console.log("[DEBUG] ", fromState, fromCity, caronasCitiesAndStates[fromState]);
-        $.each(caronasCitiesAndStates[fromState], function (i, value) {
-            if (value["to"] == fromCity) {
-                cities_list += ("<option value=\"" + value["from"] + "\">" + toTitleCase(value["from"]) + "</option>");
-            }
+        // console.log("[DEBUG] ", fromState, fromCity, caronasCitiesAndStates[fromState][fromCity]);
+        $.each(caronasCitiesAndStates[fromState][fromCity], function (i, value) {
+            cities_list += ("<option value=\"" + value["to"] + "\">" + toTitleCase(value["to"]) + "</option>");
         });
         // console.log("[DEBUG] ", cities_list);
         $('select[name="to-city-list"]').html(cities_list);
@@ -59,6 +57,8 @@
 
         // change of state
         $('select[name="from-city-list"]').on("change", changeOfOrigin);
+        // initial change of origin
+        changeOfOrigin(null);
 
         $('button[name="search-carona-button"]').click(function (event) {
 
@@ -142,13 +142,13 @@
         </div>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
             <select id="from-state-list" name="from-state-list">
-                {% for car in caronas %}
-                <option value="{{car}}">{{car}}</option>
+                {% for carona in caronas %}
+                <option value="{{carona}}">{{carona}}</option>
                 {% endfor %}
             </select>
             <label for="from-city-list"></label><select id="from-city-list" name="from-city-list">
-                {% for city in caronas|get_item:from_state %}
-                <option value="{{city.from}}">{{city.from|title}}</option>
+                {% for city in caronas|get_item:"SP" %}
+                    <option value="{{city}}">{{city|title}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -165,11 +165,6 @@
             {% endfor %}
             </select>
             <label for="to-city-list"></label><select id="to-city-list" name="to-city-list">
-                {% for city in caronas|get_item:"SP" %}
-                {% if city.to == from_city%}
-                <option value="{{city.to}}">{{city.to|title}}</option>
-                {% endif %}
-                {% endfor %}
             </select>
         </div>
     </div>
