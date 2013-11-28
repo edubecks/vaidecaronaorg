@@ -4,6 +4,7 @@ import datetime
 from pprint import pprint
 from djangoapp.apps.caronasbrasil.models import CaronaModel, CaronaGroupModel, ParserErrorsModel
 from django.db.models import Q
+from collections import defaultdict
 
 __author__ = 'edubecks'
 
@@ -51,26 +52,24 @@ class PersistenceController(object):
 
 
     def get_carona_paths(self):
-        paths = {}
+        paths = defaultdict(lambda: defaultdict(list))
         for p in CaronaGroupModel.objects.all():
 
-            if not p.city1_state in paths:
-                paths[p.city1_state] = []
-            paths[p.city1_state].append({
+            paths[p.city1_state][p.city1].append({
                 'id': p.fb_group_id,
                 'from': p.city1,
                 'to': p.city2,
                 'to_state': p.city2_state,
             })
 
-            if not p.city2_state in paths:
-                paths[p.city2_state] = []
-            paths[p.city2_state].append({
+            paths[p.city2_state][p.city2].append({
                 'id': p.fb_group_id,
                 'from': p.city2,
                 'to': p.city1,
                 'to_state': p.city1_state,
             })
+
+        pprint(paths)
 
         return paths
 
